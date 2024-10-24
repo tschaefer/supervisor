@@ -1,0 +1,66 @@
+---
+# Overwrite or add rules to create your own house style
+require:
+  - rubocop-rake
+  - rubocop-faker
+  - rubocop-rspec
+  - rubocop-rails
+  - rubocop-rspec_rails
+  - rubocop-factory_bot
+
+inherit_from:
+  - .rubocop/exclude.yml
+
+AllCops:
+  NewCops: enable
+  DisplayCopNames: true
+  DisabledByDefault: false
+
+Style/FrozenStringLiteralComment:
+  Enabled: false
+
+Style/Documentation:
+  Enabled: false
+
+# aggregate_failures is set to true by default, see spec/spec_helper.rb:96
+RSpec/MultipleExpectations:
+  Enabled: false
+
+RSpec/ExampleLength:
+  Max: 24
+  CountAsOne:
+    - 'array'
+    - 'hash'
+    - 'heredoc'
+
+Style/RegexpLiteral:
+  EnforcedStyle: percent_r
+
+Metrics/MethodLength:
+  Max: 24
+  CountAsOne:
+    - 'array'
+    - 'hash'
+    - 'heredoc'
+
+Metrics/BlockLength:
+  Max: 48
+  CountAsOne:
+    - 'array'
+    - 'hash'
+    - 'heredoc'
+
+Style/NegatedIf:
+  Enabled: false
+
+Layout/SpaceInsideArrayLiteralBrackets:
+  EnforcedStyle: no_space
+
+RSpecRails/InferredSpecType:
+  Enabled: false
+
+Metrics/AbcSize:
+  CountRepeatedAttributes: false
+
+RSpec/AnyInstance:
+  Enabled: false
