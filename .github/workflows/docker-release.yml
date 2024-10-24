@@ -38,13 +38,11 @@ jobs:
 
       - name: Docker image labels
         run: |
-          cat <<EOF>> $GITHUB_ENV
-            LABELS=org.opencontainers.image.title=${{ github.event.repository.name }}
-            LABELS=${LABELS},org.opencontainers.image.description=${{ github.event.repository.description }}
-            LABELS=${LABELS},org.opencontainers.image.url=${{ github.event.repository.html_url }}
-            LABELS=${LABELS},org.opencontainers.image.source=${{ github.event.repository.clone_url }}
-            LABELS=${LABELS},org.opencontainers.image.version=${{ github.sha }}
-          EOF
+          echo LABELS=org.opencontainers.image.title=${{ github.event.repository.name }} >> $GITHUB_ENV
+          echo LABELS=${LABELS},org.opencontainers.image.description=${{ github.event.repository.description }} >> $GITHUB_ENV
+          echo LABELS=${LABELS},org.opencontainers.image.url=${{ github.event.repository.html_url }} >> $GITHUB_ENV
+          echo LABELS=${LABELS},org.opencontainers.image.source=${{ github.event.repository.clone_url }} >> $GITHUB_ENV
+          echo LABELS=${LABELS},org.opencontainers.image.version=${{ github.sha }} >> $GITHUB_ENV
 
       - name: Build and push Docker image 🚢
         uses: docker/build-push-action@v6.9.0
