@@ -34,7 +34,7 @@ jobs:
       - name: Docker image reference
         run: |
           cat <<EOF>> $GITHUB_ENV
-            REFERENCE=$(echo ${{ github.ref }} | sed -E 's/refs\/(tags|heads)\///')
+            REFERENCE=${{ github.sha }}
             META_REFERENCE=${{ startsWith(github.ref, 'refs/tags/') && 'stable' || 'latest' }}
           EOF
 
