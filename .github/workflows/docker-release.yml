@@ -56,5 +56,6 @@ jobs:
           tags: |
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.REFERENCE }}
             ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.META_REFERENCE }}
+          labels: ${{ env.LABELS }}
           cache-from: type=gha
           cache-to: type=gha,mode=max
