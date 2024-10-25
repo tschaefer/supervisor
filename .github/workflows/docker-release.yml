@@ -31,10 +31,14 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Docker image reference
-        run: |
-          echo REFERENCE=${{ github.sha }} >> $GITHUB_ENV
-          echo META_REFERENCE=${{ startsWith(github.ref, 'refs/tags/') && 'stable' || 'latest' }} >> $GITHUB_ENV
+      - name: Docker meta
+        id: meta
+        uses: docker/metadata-action@v5
+        env:
+          REGISTRY: ghcr.io
+          IMAGE_NAME: ${{ github.repository }}
+        with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
 
       - name: Build and push Docker image 🚢
         uses: docker/build-push-action@v6.9.0
@@ -45,9 +49,7 @@ jobs:
           context: .
           file: ./Dockerfile
           push: true
-          tags: |
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.REFERENCE }}
-            ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.META_REFERENCE }}
+          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
-          # cache-from: type=gha
-          # cache-to: type=gha,mode=max
+          cache-from: type=gha
+          cache-to: type=gha,mode=max

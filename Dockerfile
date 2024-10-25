@@ -69,7 +69,7 @@ ENTRYPOINT ["/rails/bin/docker-entrypoint"]
 EXPOSE 3000
 CMD ["./bin/rails", "server"]
 
-# Add image label information
-LABEL org.opencontainers.image.description="The Docker GitOps service"
-LABEL org.opencontainers.image.licenses=MIT
-LABEL org.opencontainers.image.source=https://github.com/tschaefer/supervisor
+# # Add image label information
+# LABEL org.opencontainers.image.description="The Docker GitOps service"
+# LABEL org.opencontainers.image.licenses=MIT
+# LABEL org.opencontainers.image.source=https://github.com/tschaefer/supervisor
