@@ -8,10 +8,13 @@ on:   # yamllint disable-line rule:truthy
   push:
     branches:
       - 'main'
+  pull_request:
+    branches:
+      - 'main'
 
 jobs:
   build:
-    name: Buid and push Docker image to GitHub Container registry
+    name: Build and push Docker image to GitHub Container registry
     runs-on: ubuntu-latest
     permissions:
       packages: write
@@ -30,16 +33,22 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Docker image reference
-        run: echo REFERENCE=$(echo ${{ github.ref }} | sed -E 's/refs\/(tags|heads)\///') >> $GITHUB_ENV
-
-      - name: Build and push Docker images 🚢
-        uses: docker/build-push-action@v6.9.0
+      - name: Create Docker image labels and tags
+        id: meta
+        uses: docker/metadata-action@v5.5.1
         env:
           REGISTRY: ghcr.io
           IMAGE_NAME: ${{ github.repository }}
         with:
+          images: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}
+
+      - name: Build and push Docker image 🚢
+        uses: docker/build-push-action@v6.9.0
+        with:
           context: .
           file: ./Dockerfile
           push: true
-          tags: ${{ env.REGISTRY }}/${{ env.IMAGE_NAME }}:${{ env.REFERENCE }}
+          tags: ${{ steps.meta.outputs.tags }}
+          labels: ${{ steps.meta.outputs.labels }}
+          cache-from: type=gha
+          cache-to: type=gha,mode=max
