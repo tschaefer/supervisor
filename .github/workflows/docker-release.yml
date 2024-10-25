@@ -8,7 +8,9 @@ on:   # yamllint disable-line rule:truthy
   push:
     branches:
       - 'main'
-      - 'tschaefer/maintenance/docker-image-build'
+  pull_request:
+    branches:
+      - 'main'
 
 jobs:
   build:
