@@ -3,6 +3,13 @@
 
 Supervisor is a Docker GitOps service that allows you to manage `docker-compose` based stacks through a REST API. The minimal input required to manage stacks includes a unique name, a URL to the git repository hosting the stack files, and a strategy for updating the stack (either via polling or webhook). Authentication and authorization are handled via HTTP headers.
 
+## Status
+[![GitHub Actions Workflow CI Status](https://img.shields.io/github/actions/workflow/status/tschaefer/supervisor/ci.yml?label=ci)](https://github.com/tschaefer/supervisor/actions)
+[![GitHub Actions Workflow Docker Release Status](https://img.shields.io/github/actions/workflow/status/tschaefer/supervisor/docker-release.yml?label=docker-release)](https://github.com/tschaefer/supervisor/actions)
+
+[![GitHub Release](https://img.shields.io/github/v/release/tschaefer/supervisor)](https://github.com/tschaefer/supervisor/releases/latest)
+[![Container image](https://img.shields.io/badge/image-latest-blue)](https://github.com/tschaefer/supervisor/pkgs/container/supervisor/latest)
+
 ## Features
 
 - Manage Docker Compose-based stacks via REST API
