@@ -69,28 +69,19 @@ class StacksController < ApplicationController
   end
 
   def stack_params
-    # Using permit with the list of permitted attributes is not possible.
-    # The attribute compose_include is an array with unknown elements (file
-    # names). The attribute compose_variables is a hash with unknown key-value
-    # pairs (environment variables).
-    # That is way permit removes the named attributes from the params hash.
-    stack = params.require(:stack).permit!
-
-    permitted = %w[
-      compose_file
-      compose_includes
-      compose_variables
-      git_reference
-      git_repository
-      git_token
-      git_username
-      name
-      polling_interval
-      signature_header
-      signature_secret
-      strategy
-    ]
-
-    stack.slice(*permitted)
+    params.require(:stack).permit(
+      :compose_file,
+      :git_reference,
+      :git_repository,
+      :git_token,
+      :git_username,
+      :name,
+      :polling_interval,
+      :signature_header,
+      :signature_secret,
+      :strategy,
+      compose_includes: [],
+      compose_variables: {}
+    )
   end
 end
