@@ -8,6 +8,7 @@ class StackJob
       def render_script(stack, assets)
         <<~SCRIPT
           #!/bin/sh
+          set -e
 
           remove_stop_stack() {
             if [ ! -d #{assets.git_dir} ]; then
@@ -20,13 +21,13 @@ class StackJob
               compose --progress plain \
               --file #{stack.compose_file} #{assets.include_files} \
               --env-file #{assets.env_file} \
-              down
+              down || true
 
             cd -
+            rm -rf #{assets.base_dir}
           }
 
           remove_stop_stack
-          rm -rf #{assets.base_dir}
         SCRIPT
       end
     end

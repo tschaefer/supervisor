@@ -8,6 +8,7 @@ class StackJob
       def render_script(stack, assets)
         <<~SCRIPT
           #!/bin/sh
+          set -e
 
           fetch_diff_stack() {
             cd #{assets.git_dir}
@@ -59,7 +60,7 @@ class StackJob
               compose --progress plain \
               --file #{stack.compose_file} #{assets.include_files} \
               --env-file #{assets.env_file} \
-              down
+              down || true
 
             cd -
           }
@@ -78,14 +79,9 @@ class StackJob
             cd -
           }
 
-          set -e
           fetch_diff_stack
           has_changed_stack
-
-          set +e
           stop_remove_stack
-
-          set -e
           create_start_stack
         SCRIPT
       end
