@@ -1,6 +1,12 @@
 class ApplicationController < ActionController::API
   def self.api_key
-    @api_key ||= ENV.fetch('SUPERVISOR_API_KEY', Rails.application.credentials.supervisor_api_key)
+    @api_key ||= lambda do
+      api_key = ENV.fetch(
+        'SUPERVISOR_API_KEY',
+        Rails.application.credentials.supervisor_api_key
+      )
+      "Bearer #{api_key}"
+    end.call
   end
 
   private
