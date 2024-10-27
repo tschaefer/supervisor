@@ -28,9 +28,36 @@ RSpec.describe '/stacks', type: :request do
   end
 
   let(:valid_headers) do
+    api_key = ENV.fetch('SUPERVISOR_API_KEY', Rails.application.credentials.supervisor_api_key)
     {
-      Authorization: ENV.fetch('SUPERVISOR_API_KEY', Rails.application.credentials.supervisor_api_key)
+      Authorization: "Bearer #{api_key}"
     }
+  end
+
+  describe 'Authorization' do
+    context 'with valid API key' do
+      it 'renders a successful response' do
+        get stacks_url, headers: valid_headers, as: :json
+        expect(response).to be_successful
+      end
+    end
+
+    context 'with invalid API key' do
+      it 'renders a response with error' do
+        get stacks_url, headers: { Authorization: 'Bearer 4711' }, as: :json
+        expect(response).not_to be_successful
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'with missing Bearer keyword' do
+      it 'renders a response with error' do
+        api_key = ENV.fetch('SUPERVISOR_API_KEY', Rails.application.credentials.supervisor_api_key)
+        get stacks_url, headers: { Authorization: api_key }, as: :json
+        expect(response).not_to be_successful
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
   end
 
   describe 'GET /index' do
@@ -70,7 +97,7 @@ RSpec.describe '/stacks', type: :request do
       it 'does not create a new Stack' do
         expect do
           post stacks_url,
-               params: { stack: invalid_attributes }, as: :json
+               params: { stack: invalid_attributes }, headers: valid_headers, as: :json
         end.not_to change(Stack, :count)
       end
 

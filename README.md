@@ -54,7 +54,7 @@ You can interact with Supervisor via its REST API to manage stacks.
 All requests to the API must be authorized using the `Authorization` HTTP header, which should contain the API key provided during setup.
 
 ```
---header "Authorization: <your-api-key>"
+--header "Authorization: Bearer <your-api-key>"
 ```
 
 ### API Endpoints
@@ -75,7 +75,7 @@ The following `curl` command demonstrates how to create a new stack using Superv
 ```
 curl --request POST \
   --silent \
-  --header "Authorization: 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
+  --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
   --verbose \
   --json '{
     "name": "whoami",
@@ -123,7 +123,7 @@ To retrieve a list of all managed stacks:
 ```
 curl --request GET \
   --silent \
-  --header "Authorization: 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
+  --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
   --verbose \
   https://supervisor.example.com/stacks/
 ```
@@ -135,7 +135,7 @@ To view the details of a specific stack (replace `<stack_uuid>` with the actual 
 ```
 curl --request GET \
   --silent \
-  --header "Authorization: 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
+  --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
   --verbose \
   https://supervisor.example.com/stacks/<stack_uuid>
 ```
@@ -147,7 +147,7 @@ To view statistics for a specific stack, such as the number of processed or fail
 ```
 curl --request GET \
   --silent \
-  --header "Authorization: 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
+  --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
   --verbose \
   https://supervisor.example.com/stacks/<stack_uuid>/stats
 ```
@@ -159,7 +159,7 @@ To update a stack (e.g., changing the `strategy`):
 ```
 curl --request PATCH \
   --silent \
-  --header "Authorization: 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
+  --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
   --verbose \
   --json '{ "strategy": "webhook" }' \
   https://supervisor.example.com/stacks/<stack_uuid>
@@ -172,7 +172,7 @@ To delete a stack:
 ```
 curl --request DELETE \
   --silent \
-  --header "Authorization: 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
+  --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
   --verbose \
   https://supervisor.example.com/stacks/<stack_uuid>
 ```

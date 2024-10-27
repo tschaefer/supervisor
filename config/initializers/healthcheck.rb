@@ -10,6 +10,6 @@ Healthcheck.configure do |config|
   config.add_check :database,   -> { ActiveRecord::Base.connection.execute('select 1') }
   config.add_check :migrations, -> { ActiveRecord::Migration.check_pending_migrations }
   config.add_check :environment, lambda {
-    Rails.application.credentials.supervisor_api_key || ENV.fetch('SUPERVISOR_API_KEY')
+    ENV.fetch('SUPERVISOR_API_KEY', nil) || Rails.application.credentials.supervisor_api_key!
   }
 end
