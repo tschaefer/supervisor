@@ -1,12 +1,14 @@
 ---
 # Overwrite or add rules to create your own house style
 require:
-  - rubocop-rake
-  - rubocop-faker
-  - rubocop-rspec
-  - rubocop-rails
-  - rubocop-rspec_rails
   - rubocop-factory_bot
+  - rubocop-faker
+  - rubocop-obsession
+  - rubocop-performance
+  - rubocop-rails
+  - rubocop-rake
+  - rubocop-rspec
+  - rubocop-rspec_rails
 
 inherit_from:
   - .rubocop/exclude.yml

@@ -5,7 +5,7 @@ class Stack
     included do
       attr_readonly :uuid
 
-      validate :git_repository_is_valid_url
+      validate :validate_git_repository
 
       validates :name, presence: true, uniqueness: true
       validates :git_repository, presence: true
@@ -19,7 +19,7 @@ class Stack
 
       private
 
-      def git_repository_is_valid_url
+      def validate_git_repository
         return if git_repository.blank?
 
         begin

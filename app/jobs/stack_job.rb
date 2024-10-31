@@ -13,6 +13,18 @@ class StackJob < ApplicationJob
 
   private
 
+  def build_assets
+    assets = {}.tap do |hash|
+      base_dir = STACKS_ROOT.join(@stack.uuid)
+
+      hash[:base_dir] = base_dir
+      hash[:env_file] = base_dir.join('stack.env')
+      hash[:git_dir] = base_dir.join('git')
+      hash[:include_files] = @stack.compose_includes.map { |i| "--file #{i}" }.join(' ')
+    end
+    Hashie::Mash.new(assets)
+  end
+
   def execute
     script = render_script(@stack, @assets)
     run_script(script)
@@ -36,17 +48,5 @@ class StackJob < ApplicationJob
       Rails.logger.error { "Failed #{self.class} (Stack UUID: #{@stack.uuid})" }
       Rails.logger.error { stdouterr }
     end
-  end
-
-  def build_assets
-    assets = {}.tap do |hash|
-      base_dir = STACKS_ROOT.join(@stack.uuid)
-
-      hash[:base_dir] = base_dir
-      hash[:env_file] = base_dir.join('stack.env')
-      hash[:git_dir] = base_dir.join('git')
-      hash[:include_files] = @stack.compose_includes.map { |i| "--file #{i}" }.join(' ')
-    end
-    Hashie::Mash.new(assets)
   end
 end

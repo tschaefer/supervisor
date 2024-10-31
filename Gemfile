@@ -25,6 +25,7 @@ group :development, :test do
   gem 'overcommit', require: false
   gem 'rubocop-factory_bot', require: false
   gem 'rubocop-faker', require: false
+  gem 'rubocop-obsession', require: false
   gem 'rubocop-performance', require: false
   gem 'rubocop-rails', require: false
   gem 'rubocop-rake', require: false
