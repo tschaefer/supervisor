@@ -6,7 +6,7 @@ on:   # yamllint disable-line rule:truthy
     types:
       - 'published'
   push:
-    branches-ignore:
+    branches:
       - 'main'
 
 jobs:
