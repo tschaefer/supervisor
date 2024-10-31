@@ -4,7 +4,7 @@ source 'https://rubygems.org'
 gem 'activerecord-enhancedsqlite3-adapter', '~> 0.8.0'
 gem 'bootsnap', require: false
 gem 'puma', '>= 5.0'
-gem 'rails', '~> 7.2.1'
+gem 'rails', '~> 7.2.2'
 gem 'rails-healthcheck'
 gem 'solid_queue', '~> 1.0'
 gem 'sqlite3', '>= 1.4'
