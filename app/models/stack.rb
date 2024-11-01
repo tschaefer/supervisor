@@ -42,6 +42,7 @@ class Stack < ApplicationRecord
 
   def rackify_signature_header
     return if !changes.key?(:signature_header)
+    return if signature_header.blank?
 
     self.signature_header = signature_header.upcase.titleize.tr(' ', '-')
   end
