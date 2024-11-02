@@ -66,6 +66,7 @@ All requests to the API must be authorized using the `Authorization` HTTP header
 - **`PATCH/PUT /stacks/<stack_uuid>`**: Update a stack.
 - **`DELETE /stacks/<stack_uuid>`**: Delete a stack.
 - **`POST /stacks/<stack_uuid>/webhook`**: Trigger a stack update.
+- **`POST /stacks/<stack_uuid>/control`**: Control the stack (start, stop, restart).
 - **`GET /up`**: Check the health of the Supervisor service. (No authorization required)
 
 ### Creating a Stack
@@ -175,6 +176,19 @@ curl --request DELETE \
   --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
   --verbose \
   https://supervisor.example.com/stacks/<stack_uuid>
+```
+
+### Control Stack
+
+To control a stack (start, stop, restart):
+
+```
+curl --request POST \
+  --silent \
+  --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
+  --verbose \
+  --json '{ "command": "start" }' \
+  https://supervisor.example.com/stacks/<stack_uuid>/control
 ```
 
 ## License

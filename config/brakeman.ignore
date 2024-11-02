@@ -1,0 +1,29 @@
+{
+  "ignored_warnings": [
+    {
+      "warning_type": "Dangerous Send",
+      "warning_code": 23,
+      "fingerprint": "63882a8ffe1934e347e4599d7c873cdafd65959dd4ea1ecd627f5f25f8f1a10b",
+      "check_name": "Send",
+      "message": "User controlled method execution",
+      "file": "app/controllers/stacks_controller.rb",
+      "line": 58,
+      "link": "https://brakemanscanner.org/docs/warning_types/dangerous_send/",
+      "code": "Stack.find_by!(:uuid => params[:uuid]).send(params[:command].to_sym)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "StacksController",
+        "method": "control"
+      },
+      "user_input": "params[:command].to_sym",
+      "confidence": "High",
+      "cwe_id": [
+        77
+      ],
+      "note": "User input is verified in previous code"
+    }
+  ],
+  "updated": "2024-11-02 09:57:25 +0100",
+  "brakeman_version": "6.2.2"
+}

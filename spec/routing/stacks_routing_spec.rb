@@ -35,5 +35,9 @@ RSpec.describe StacksController, type: :routing do
     it 'routes to #stats' do
       expect(get: "/stacks/#{uuid}/stats").to route_to('stacks#stats', uuid:)
     end
+
+    it 'routes to #control' do
+      expect(post: "/stacks/#{uuid}/control").to route_to('stacks#control', uuid:)
+    end
   end
 end

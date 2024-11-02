@@ -28,12 +28,19 @@ class StackJob < ApplicationJob
   def execute
     script = render_script(@stack, @assets)
     run_script(script)
+
+    stats_jobs = [
+      StackDeployJob,
+      StackPollingJob,
+      StackWebhookJob
+    ]
+    return if stats_jobs.exclude?(self.class)
     return if noop?
 
     @stack.update_stats(success: success?)
   end
 
-  def render_script(_stack, _assets)
+  def render_script(*)
     raise "#{self.class} must implement the method #{__method__}"
   end
 

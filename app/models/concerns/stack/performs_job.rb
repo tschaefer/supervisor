@@ -6,6 +6,18 @@ class Stack
       after_save_commit    :perform_deploy_job
       after_destroy_commit :perform_destroy_job
 
+      def start
+        StackStartJob.perform_later(self)
+      end
+
+      def stop
+        StackStopJob.perform_later(self)
+      end
+
+      def restart
+        StackRestartJob.perform_later(self)
+      end
+
       private
 
       def perform_deploy_job

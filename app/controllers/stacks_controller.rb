@@ -1,5 +1,5 @@
 class StacksController < ApplicationController
-  before_action :set_stack, only: %i[show update destroy stats webhook]
+  before_action :set_stack, only: %i[show update destroy stats webhook control]
   before_action :authorize, except: :webhook
   before_action :validate_signature, only: :webhook
 
@@ -46,6 +46,16 @@ class StacksController < ApplicationController
   # GET /stacks/${uuid}/stats
   def stats
     render json: @stack.stats.merge(uuid: @stack.uuid)
+  end
+
+  # POST /stacks/${uuid}/control
+  def control
+    command = params[:command]
+
+    allowed_commands = %w[start stop restart]
+    return render json: { error: 'Invalid control command' }, status: :bad_request if allowed_commands.exclude?(command)
+
+    @stack.send(command.to_sym)
   end
 
   # POST /stacks/${uuid}/webhook

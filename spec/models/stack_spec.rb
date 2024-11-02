@@ -85,5 +85,32 @@ RSpec.describe Stack, type: :model do
         expect(stack).not_to be_webhook
       end
     end
+
+    describe '#start' do
+      it 'enqueues a StackStartJob' do
+        allow(StackStartJob).to receive(:perform_later).and_return(true)
+
+        stack.start
+        expect(StackStartJob).to have_received(:perform_later).with(stack)
+      end
+    end
+
+    describe '#stop' do
+      it 'enqueues a StackStopJob' do
+        allow(StackStopJob).to receive(:perform_later).and_return(true)
+
+        stack.stop
+        expect(StackStopJob).to have_received(:perform_later).with(stack)
+      end
+    end
+
+    describe '#restart' do
+      it 'enqueues a StackRestartJob' do
+        allow(StackRestartJob).to receive(:perform_later).and_return(true)
+
+        stack.restart
+        expect(StackRestartJob).to have_received(:perform_later).with(stack)
+      end
+    end
   end
 end
