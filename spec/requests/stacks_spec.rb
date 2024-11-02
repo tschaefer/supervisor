@@ -5,6 +5,9 @@ RSpec.describe '/stacks', type: :request do
     allow_any_instance_of(Stack).to receive(:perform_deploy_job).and_return(true)
     allow_any_instance_of(Stack).to receive(:perform_destroy_job).and_return(true)
     allow(StackWebhookJob).to receive(:perform_later).and_return(true)
+    allow(StackStartJob).to receive(:perform_later).and_return(true)
+    allow(StackStopJob).to receive(:perform_later).and_return(true)
+    allow(StackRestartJob).to receive(:perform_later).and_return(true)
   end
 
   let(:valid_attributes) do
@@ -218,6 +221,27 @@ RSpec.describe '/stacks', type: :request do
         expect(response).to be_successful
         expect(response).to have_http_status(:accepted)
         expect(response.body).to include('Webhook received')
+      end
+    end
+  end
+
+  describe 'POST /control' do
+    context 'with invalid method' do
+      it 'renders a response with error' do
+        stack = Stack.create! valid_attributes
+        post stack_control_url(stack.uuid), params: { method: 'invalid' }, headers: valid_headers, as: :json
+        expect(response).not_to be_successful
+        expect(response).to have_http_status(:bad_request)
+        expect(response.body).to include('Invalid control method')
+      end
+    end
+
+    context 'with valid method' do
+      it 'renders a response with success' do
+        stack = Stack.create! valid_attributes
+        post stack_control_url(stack.uuid), params: { method: 'start' }, headers: valid_headers, as: :json
+        expect(response).to be_successful
+        expect(response).to have_http_status(:no_content)
       end
     end
   end
