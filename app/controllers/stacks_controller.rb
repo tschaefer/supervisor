@@ -50,12 +50,12 @@ class StacksController < ApplicationController
 
   # POST /stacks/${uuid}/control
   def control
-    method = params[:method]
+    command = params[:command]
 
-    allowed_methods = %w[start stop restart]
-    return render json: { error: 'Invalid control method' }, status: :bad_request if allowed_methods.exclude?(method)
+    allowed_commands = %w[start stop restart]
+    return render json: { error: 'Invalid control command' }, status: :bad_request if allowed_commands.exclude?(command)
 
-    @stack.send(method.to_sym)
+    @stack.send(command.to_sym)
   end
 
   # POST /stacks/${uuid}/webhook

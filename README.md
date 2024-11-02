@@ -187,7 +187,7 @@ curl --request POST \
   --silent \
   --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
   --verbose \
-  --json '{ "method": "start" }' \
+  --json '{ "command": "start" }' \
   https://supervisor.example.com/stacks/<stack_uuid>/control
 ```
 

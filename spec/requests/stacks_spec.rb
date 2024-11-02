@@ -226,20 +226,20 @@ RSpec.describe '/stacks', type: :request do
   end
 
   describe 'POST /control' do
-    context 'with invalid method' do
+    context 'with invalid command' do
       it 'renders a response with error' do
         stack = Stack.create! valid_attributes
-        post stack_control_url(stack.uuid), params: { method: 'invalid' }, headers: valid_headers, as: :json
+        post stack_control_url(stack.uuid), params: { command: 'invalid' }, headers: valid_headers, as: :json
         expect(response).not_to be_successful
         expect(response).to have_http_status(:bad_request)
-        expect(response.body).to include('Invalid control method')
+        expect(response.body).to include('Invalid control command')
       end
     end
 
-    context 'with valid method' do
+    context 'with valid command' do
       it 'renders a response with success' do
         stack = Stack.create! valid_attributes
-        post stack_control_url(stack.uuid), params: { method: 'start' }, headers: valid_headers, as: :json
+        post stack_control_url(stack.uuid), params: { command: 'start' }, headers: valid_headers, as: :json
         expect(response).to be_successful
         expect(response).to have_http_status(:no_content)
       end
