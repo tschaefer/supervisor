@@ -29,7 +29,6 @@ class Stack
           git_repository
           git_token
           git_username
-          git_variables
         ]
         StackDeployJob.perform_later(self) if saved_changes.keys.any? { |key| keys.include?(key) }
 
@@ -58,8 +57,10 @@ class Stack
       def cancel_polling_job
         return if Rails.application.config.active_job.queue_adapter != :solid_queue
 
-        SolidQueue::Job.where(class_name: 'StackPollingJob', finished_at: nil)
-                       .where('arguments like ?', "%#{to_global_id}%")
+        SolidQueue::Job
+          .where(class_name: 'StackPollingJob', finished_at: nil)
+          .where('arguments like ?', "%#{to_global_id}%")
+          .destroy_all
       end
     end
   end
