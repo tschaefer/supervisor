@@ -37,7 +37,7 @@ class StackJob < ApplicationJob
     return if stats_jobs.exclude?(self.class)
     return if noop?
 
-    @stack.update_stats(success: success?)
+    @stack.update_stats(failed: error?)
   end
 
   def render_script(*)
