@@ -1,5 +1,4 @@
 class StackDeployJob < StackJob
-  include StackJob::RunsDeployScript
-
   queue_as :deploy
+  script_template :deploy
 end

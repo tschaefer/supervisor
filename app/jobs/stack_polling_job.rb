@@ -1,7 +1,6 @@
 class StackPollingJob < StackJob
-  include StackJob::RunsUpdateScript
-
   queue_as :polling
+  script_template :update
 
   private
 

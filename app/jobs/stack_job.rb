@@ -1,5 +1,6 @@
 class StackJob < ApplicationJob
   include StackJob::HandlesExecuteResult
+  include StackJob::HasScriptTemplate
 
   STACKS_ROOT = ENV.fetch('SUPERVISOR_STACKS_ROOT', Rails.root.join('storage/stack'))
 
@@ -17,10 +18,10 @@ class StackJob < ApplicationJob
     assets = {}.tap do |hash|
       base_dir = STACKS_ROOT.join(@stack.uuid)
 
-      hash[:base_dir] = base_dir
-      hash[:env_file] = base_dir.join('stack.env')
-      hash[:git_dir] = base_dir.join('git')
-      hash[:include_files] = @stack.compose_includes.map { |i| "--file #{i}" }.join(' ')
+      hash[:base_dir] = base_dir.to_s
+      hash[:env_file] = base_dir.join('stack.env').to_s
+      hash[:git_dir] = base_dir.join('git').to_s
+      hash[:include_files] = @stack.compose_includes.join(' ')
     end
     Hashie::Mash.new(assets)
   end
@@ -40,8 +41,11 @@ class StackJob < ApplicationJob
     @stack.update_stats(failed: error?)
   end
 
-  def render_script(*)
-    raise "#{self.class} must implement the method #{__method__}"
+  def render_script(stack, assets)
+    template_path = Rails.root.join("app/jobs/stack_job/templates/#{self.class.script_template}.sh.tt")
+    template = File.read(template_path)
+
+    ERB.new(template, trim_mode: '-').result(binding)
   end
 
   def run_script(script)

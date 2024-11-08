@@ -1,7 +1,7 @@
 class StackRestartJob < StackJob
-  include StackJob::RunsControlScript
+  include StackJob::HasControlCommand
 
   queue_as :deploy
-
-  action :restart
+  script_template :control
+  control_command :restart
 end

@@ -1,7 +1,6 @@
 class StackDestroyJob < StackJob
-  include StackJob::RunsDestroyScript
-
   queue_as :deploy
+  script_template :destroy
 
   def execute
     script = render_script(@stack, @assets)

@@ -1,7 +1,7 @@
 class StackStopJob < StackJob
-  include StackJob::RunsControlScript
+  include StackJob::HasControlCommand
 
   queue_as :deploy
-
-  action :stop
+  script_template :control
+  control_command :stop
 end

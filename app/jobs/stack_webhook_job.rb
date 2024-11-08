@@ -1,7 +1,6 @@
 class StackWebhookJob < StackJob
-  include StackJob::RunsUpdateScript
-
   queue_as :deploy
+  script_template :update
 
   private
 
