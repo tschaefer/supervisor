@@ -3,8 +3,6 @@ class Stack
     extend ActiveSupport::Concern
 
     included do
-      attr_readonly :uuid
-
       validate :validate_git_repository
 
       validates :name, presence: true, uniqueness: true

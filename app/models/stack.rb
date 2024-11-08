@@ -3,6 +3,8 @@ class Stack < ApplicationRecord
   include Stack::PerformsJob
   include Stack::HasStats
 
+  attr_readonly :uuid
+
   serialize :compose_variables, type: Hash, coder: JSON
   serialize :compose_includes, type: Array, coder: JSON
 
