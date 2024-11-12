@@ -13,7 +13,7 @@ class Stack
 
       def update_stats(failed: false)
         processed = self.processed + 1
-        failed = self.failed + 1 if failed
+        failed = failed ? self.failed + 1 : self.failed
         last_run = Time.current
 
         update(
