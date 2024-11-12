@@ -6,7 +6,7 @@ FROM docker.io/library/ruby:$RUBY_VERSION-slim AS base
 WORKDIR /rails
 
 # Copy build tools
-COPY rootfs /
+COPY docker/rootfs /
 
 # Install base packages
 RUN install_packages curl libjemalloc2 libvips sqlite3
@@ -39,6 +39,7 @@ RUN bundle exec bootsnap precompile app/ lib/
 # Final stage for app image
 FROM base
 
+# Persist storage for database and repositories
 VOLUME /rails/storage
 
 # Copy built artifacts: gems, application
@@ -63,7 +64,7 @@ RUN install_packages sudo && \
 USER 1001:1001
 
 # Entrypoint prepares the database.
-ENTRYPOINT ["/rails/bin/docker-entrypoint"]
+ENTRYPOINT ["/usr/bin/docker-entrypoint"]
 
 # Start the server by default, this can be overwritten at runtime
 EXPOSE 3000
