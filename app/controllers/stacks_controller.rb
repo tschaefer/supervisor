@@ -1,5 +1,5 @@
 class StacksController < ApplicationController
-  before_action :set_stack, only: %i[show update destroy stats webhook control]
+  before_action :set_stack, except: %i[index create]
   before_action :authorize, except: :webhook
   before_action :validate_signature, only: :webhook
 
@@ -70,12 +70,30 @@ class StacksController < ApplicationController
 
   private
 
-  # Use callbacks to share common setup or constraints between actions.
   def set_stack
     Rails.logger.debug { params.to_json }
     @stack = Stack.find_by!(uuid: params[:uuid])
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Stack not found' }, status: :not_found
+  end
+
+  def validate_signature
+    signature       = request.headers.fetch(@stack.signature_header, nil)
+    algorithm, hmac = signature&.split('=')
+    payload         = request.body.read
+    secret          = @stack.signature_secret
+
+    begin
+      return if ActiveSupport::SecurityUtils.fixed_length_secure_compare(
+        hmac,
+        OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new(algorithm), secret, payload)
+      )
+    rescue ArgumentError, TypeError, RuntimeError
+      # signature is nil or differs in length
+      # bad digest algorithm
+    end
+
+    render json: { error: 'Payload signature is invalid' }, status: :bad_request
   end
 
   def stack_params
