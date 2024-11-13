@@ -52,12 +52,6 @@ class StackJob < ApplicationJob
     stdouterr, status = Open3.capture2e({}, script)
     @status = status.exitstatus
 
-    if success? || noop?
-      Rails.logger.info { "Succeded #{self.class} (Stack UUID: #{@stack.uuid})" }
-      Rails.logger.debug { stdouterr }
-    else
-      Rails.logger.error { "Failed #{self.class} (Stack UUID: #{@stack.uuid})" }
-      Rails.logger.error { stdouterr }
-    end
+    Rails.logger.error { "[#{@stack.uuid}] #{stdouterr}" } if error?
   end
 end
