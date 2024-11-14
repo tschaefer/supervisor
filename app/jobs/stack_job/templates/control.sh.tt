@@ -14,7 +14,7 @@ compose_includes() {
 
 
 control_stack() {
-  cd "<%= assets.git_dir %>"
+  cd "<%= assets.git_dir %>" >/dev/null
 
   files=$(compose_includes)
 

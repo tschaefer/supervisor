@@ -17,7 +17,7 @@ remove_stop_stack() {
     return
   fi
 
-  cd "<%= assets.git_dir %>"
+  cd "<%= assets.git_dir %>" >/dev/null
 
   local files
   files=$(compose_includes)
@@ -25,10 +25,9 @@ remove_stop_stack() {
   sudo docker --log-level error \
     compose --progress plain \
     --file "<%= stack.compose_file %>" $files \
-    --env-file "<%= assets.env_file %>" \
     down || true
 
-  cd -
+  cd - >/dev/null
   rm -rf "<%= assets.base_dir %>"
 }
 

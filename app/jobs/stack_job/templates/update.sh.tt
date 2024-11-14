@@ -13,14 +13,14 @@ compose_includes() {
 }
 
 fetch_diff_stack() {
-  cd "<%= assets.git_dir %>"
+  cd "<%= assets.git_dir %>" >/dev/null
   git fetch origin "<%= stack.git_reference %>"
   git diff --quiet FETCH_HEAD && exit 254
-  cd -
+  cd - >/dev/null
 }
 
 has_changed_stack() {
-  cd "<%= assets.git_dir %>"
+  cd "<%= assets.git_dir %>" >/dev/null
 
   local has_changes="false"
   for file in $(git diff --name-only origin); do
@@ -49,7 +49,7 @@ has_changed_stack() {
     exit 254
   fi
 
-  cd -
+  cd - >/dev/null
 }
 
 stop_remove_stack() {
@@ -57,7 +57,7 @@ stop_remove_stack() {
     return
   fi
 
-  cd "<%= assets.git_dir %>"
+  cd "<%= assets.git_dir %>" >/dev/null
 
   local files
   files=$(compose_includes)
@@ -65,14 +65,13 @@ stop_remove_stack() {
   sudo docker --log-level error \
     compose --progress plain \
     --file "<%= stack.compose_file %>" $files \
-    --env-file "<%= assets.env_file %>" \
     down || true
 
-  cd -
+  cd - >/dev/null
 }
 
 create_start_stack() {
-  cd "<%= assets.git_dir %>"
+  cd "<%= assets.git_dir %>" >/dev/null
 
   git merge FETCH_HEAD
 
@@ -85,7 +84,7 @@ create_start_stack() {
     --env-file "<%= assets.env_file %>" \
     up --detach
 
-  cd -
+  cd - >/dev/null
 }
 
 fetch_diff_stack
