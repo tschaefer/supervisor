@@ -36,6 +36,16 @@ class Stack < ApplicationRecord
     strategy == 'webhook'
   end
 
+  def log
+    log_file = StackJob::STACKS_ROOT.join(uuid, 'stack.log')
+    return if !File.exist?(log_file)
+
+    last_line = nil
+    File.open(log_file, 'r') { |log| log.each { |line| last_line = line } }
+
+    last_line
+  end
+
   private
 
   def generate_uuid

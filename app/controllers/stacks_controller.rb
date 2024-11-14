@@ -1,4 +1,7 @@
-class StacksController < ApplicationController
+class StacksController < ApplicationController # rubocop:disable Metrics/ClassLength
+  include ActionController::Live
+  include StacksController::StreamsLog
+
   before_action :set_stack, except: %i[index create]
   before_action :authorize, except: :webhook
   before_action :validate_signature, only: :webhook
@@ -66,6 +69,26 @@ class StacksController < ApplicationController
       StackWebhookJob.perform_later(@stack)
       render json: { message: 'Webhook received' }, status: :accepted
     end
+  end
+
+  # GET /stacks/${uuid}/last_log
+  def last_logs_entry
+    render json: @stack.log
+  end
+
+  def logs
+    response.headers['Content-Type'] = 'text/event-stream'
+    response.headers['Cache-Control'] = 'no-cache'
+    response.headers['Connection'] = 'keep-alive'
+
+    response.headers['rack.hijack'] = proc do |stream|
+      Thread.new do
+        sse = SSE.new(stream, retry: 100, event: 'open')
+        stream_logs(sse)
+      end
+    end
+
+    head :ok
   end
 
   private

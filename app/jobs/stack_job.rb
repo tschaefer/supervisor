@@ -29,6 +29,9 @@ class StackJob < ApplicationJob
   def execute
     script = render_script(@stack, @assets)
     run_script(script)
+    return if noop?
+
+    stack_log
 
     stats_jobs = [
       StackDeployJob,
@@ -36,7 +39,6 @@ class StackJob < ApplicationJob
       StackWebhookJob
     ]
     return if stats_jobs.exclude?(self.class)
-    return if noop?
 
     @stack.update_stats(failed: error?)
   end
@@ -49,9 +51,7 @@ class StackJob < ApplicationJob
   end
 
   def run_script(script)
-    stdouterr, status = Open3.capture2e({}, script)
+    @stdouterr, status = Open3.capture2e({}, script)
     @status = status.exitstatus
-
-    Rails.logger.error { "[#{@stack.uuid}] #{stdouterr}" } if error?
   end
 end
