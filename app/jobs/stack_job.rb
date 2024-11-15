@@ -29,9 +29,8 @@ class StackJob < ApplicationJob
   def execute
     script = render_script(@stack, @assets)
     run_script(script)
-    return if noop?
-
     stack_log
+    return if noop?
 
     stats_jobs = [
       StackDeployJob,

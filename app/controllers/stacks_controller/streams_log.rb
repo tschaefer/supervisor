@@ -38,7 +38,7 @@ class StacksController
       end
 
       def send_close_message(sse, message)
-        sse.write({ timestamp: Time.now.utc.iso8601, message: message }.to_json, event: 'close')
+        sse.write({ created_at: Time.now.utc.iso8601(3), message: message }.to_json, event: 'close')
         sse.close
       end
 

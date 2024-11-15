@@ -24,7 +24,19 @@ class StackJob
 
         stack_log_file = Pathname.new(@assets.base_dir).join('stack.log')
         File.open(stack_log_file, 'a') do |log|
-          log.puts({ timestamp: Time.now.utc.iso8601, message: @stdouterr }.to_json)
+          log.puts({ created_at: Time.now.utc.iso8601(3), message: stack_log_message }.to_json)
+        end
+      end
+
+      def stack_log_message
+        action = self.class.name.titleize.humanize.chomp(' job')
+
+        if success?
+          "#{action} succeeded"
+        elsif noop?
+          "#{action} was a no-op"
+        else
+          "#{action} failed"
         end
       end
     end
