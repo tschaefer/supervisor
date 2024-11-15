@@ -3,21 +3,21 @@
     {
       "warning_type": "File Access",
       "warning_code": 16,
-      "fingerprint": "2c3a2e5e2e726755245c04e558be322d383ae1722144181ab36cb97c09bc222e",
+      "fingerprint": "507f1716fc403b7ecce8b73cc72a4afe2313e0583869e40b0c90d64d59843b9c",
       "check_name": "FileAccess",
       "message": "Model attribute used in file name",
       "file": "app/controllers/stacks_controller/streams_log.rb",
       "line": 35,
       "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
-      "code": "File.open(StackJob::STACKS_ROOT.join(Stack.find_by!(:uuid => params[:uuid]).uuid, \"stack.log\"), \"r\")",
+      "code": "File.open(Stack.find_by!(:uuid => params[:uuid]).assets.log_file.to_s, \"r\")",
       "render_path": null,
       "location": {
         "type": "method",
         "class": "StacksController",
         "method": "open_log_file!"
       },
-      "user_input": "Stack.find_by!(:uuid => params[:uuid])",
-      "confidence": "Weak",
+      "user_input": "Stack.find_by!(:uuid => params[:uuid]).assets.log_file.to_s",
+      "confidence": "Medium",
       "cwe_id": [
         22
       ],
@@ -47,6 +47,6 @@
       "note": "User input is verified in previous code"
     }
   ],
-  "updated": "2024-11-14 13:05:34 +0100",
+  "updated": "2024-11-15 17:19:55 +0100",
   "brakeman_version": "6.2.2"
 }

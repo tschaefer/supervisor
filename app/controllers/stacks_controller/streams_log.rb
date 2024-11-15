@@ -25,7 +25,7 @@ class StacksController
       end
 
       def open_log_file!(sse)
-        log_file = StackJob::STACKS_ROOT.join(@stack.uuid, 'stack.log')
+        log_file = @stack.assets.log_file.to_s
 
         if !File.exist?(log_file)
           send_close_message(sse, 'No log file found')

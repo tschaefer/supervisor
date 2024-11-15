@@ -22,7 +22,7 @@ class StackJob
         Rails.logger.error { "[#{@stack.uuid}] #{@stdouterr}" } if error?
         return if instance_of?(StackDestroyJob)
 
-        stack_log_file = Pathname.new(@assets.base_dir).join('stack.log')
+        stack_log_file = @stack.assets.log_file.to_s
         File.open(stack_log_file, 'a') do |log|
           log.puts({ created_at: Time.now.utc.iso8601(3), message: stack_log_message }.to_json)
         end
