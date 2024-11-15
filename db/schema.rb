@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.2].define(version: 2024_09_30_141137) do
+ActiveRecord::Schema[8.0].define(version: 2024_09_30_141137) do
   create_table "stacks", force: :cascade do |t|
     t.string "name", null: false
     t.string "uuid", null: false
