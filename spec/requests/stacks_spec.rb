@@ -245,4 +245,20 @@ RSpec.describe '/stacks', type: :request do
       end
     end
   end
+
+  describe 'GET /last_logs_entry' do
+    it 'renders a successful response' do
+      stack = Stack.create! valid_attributes
+      get stack_last_logs_entry_url(stack.uuid), headers: valid_headers, as: :json
+      expect(response).to be_successful
+    end
+  end
+
+  describe 'GET /logs' do
+    it 'renders a successful response' do
+      stack = Stack.create! valid_attributes
+      get stack_logs_url(stack.uuid), headers: valid_headers, as: :json
+      expect(response).to be_successful
+    end
+  end
 end

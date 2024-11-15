@@ -112,5 +112,35 @@ RSpec.describe Stack, type: :model do
         expect(StackRestartJob).to have_received(:perform_later).with(stack)
       end
     end
+
+    describe '#assets' do
+      it 'returns a Hashie::Mash of stack assets' do
+        assets = stack.assets
+
+        expect(assets.base_dir).to match(%r{#{stack.uuid}$})
+        expect(assets.env_file).to match(%r{#{stack.uuid}/stack.env$})
+        expect(assets.git_dir).to match(%r{#{stack.uuid}/git$})
+        expect(assets.log_file).to match(%r{#{stack.uuid}/stack.log$})
+      end
+    end
+
+    describe '#log' do
+      before do
+        stub_const('Stack::ROOT', Pathname.new(Dir.mktmpdir))
+      end
+
+      it 'returns the last line of the log file' do
+        base_dir = stack.assets.base_dir
+        FileUtils.mkdir_p(base_dir)
+        log_file = stack.assets.log_file
+        File.write(log_file, Faker::Lorem.paragraphs.join("\n"))
+
+        expect(stack.log).to eq(File.readlines(log_file).last)
+      end
+
+      it 'returns nil when the log file does not exist' do
+        expect(stack.log).to be_nil
+      end
+    end
   end
 end
