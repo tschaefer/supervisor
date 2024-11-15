@@ -6,8 +6,13 @@ default: &default
   default_transaction_mode: IMMEDIATE
 
 development:
-  <<: *default
-  database: storage/development.sqlite3
+  primary:
+    <<: *default
+    database: storage/development.sqlite3
+  queue:
+    <<: *default
+    database: storage/development_queue.sqlite3
+    migrations_paths: db/queue_migrate
 
 test:
   <<: *default

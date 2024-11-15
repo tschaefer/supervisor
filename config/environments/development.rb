@@ -26,6 +26,11 @@ Rails.application.configure do
   # Change to :null_store to avoid any caching.
   config.cache_store = :memory_store
 
+  # Replace the default in-process and non-durable queuing backend for Active Job.
+  config.active_job.queue_adapter = :solid_queue
+  config.solid_queue.connects_to = { database: { writing: :queue } }
+  # config.active_job.queue_name_prefix = "docker_supervisior_production"
+
   # Set log level to via RAILS_LOG_LEVEL environment variable, default to debug.
   config.log_level = ENV.fetch('RAILS_LOG_LEVEL', 'debug')
 
