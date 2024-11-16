@@ -52,7 +52,7 @@ RSpec.describe Stack, type: :model do
           Faker::Lorem.word => Faker::Lorem.word,
           Faker::Lorem.word => Faker::Lorem.word
         }
-        environment = stack.compose_variables.map { |k, v| "#{k}=#{v}" }.join("\n")
+        environment = stack.compose_variables.map { |k, v| "#{k}=\"#{v}\"" }.join("\n")
 
         expect(stack.environment).to eq(environment)
       end
