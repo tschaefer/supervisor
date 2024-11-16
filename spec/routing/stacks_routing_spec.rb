@@ -40,12 +40,8 @@ RSpec.describe StacksController, type: :routing do
       expect(post: "/stacks/#{uuid}/control").to route_to('stacks#control', uuid:)
     end
 
-    it 'routes to #last_logs_entry' do
-      expect(get: "/stacks/#{uuid}/last_logs_entry").to route_to('stacks#last_logs_entry', uuid:)
-    end
-
-    it 'routes to #logs' do
-      expect(get: "/stacks/#{uuid}/logs").to route_to('stacks#logs', uuid:)
+    it 'routes to #log' do
+      expect(get: "/stacks/#{uuid}/log").to route_to('stacks#log', uuid:)
     end
   end
 end

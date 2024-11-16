@@ -67,6 +67,7 @@ All requests to the API must be authorized using the `Authorization` HTTP header
 - **`DELETE /stacks/<stack_uuid>`**: Delete a stack.
 - **`POST /stacks/<stack_uuid>/webhook`**: Trigger a stack update.
 - **`POST /stacks/<stack_uuid>/control`**: Control the stack (start, stop, restart).
+- **`GET /stacks/<stack_uuid>/log[?follow=true]`**: Retrieve last stack log entry or stream logs (Server-sent events).
 - **`GET /up`**: Check the health of the Supervisor service. (No authorization required)
 
 ### Creating a Stack
@@ -176,6 +177,28 @@ curl --request DELETE \
   --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
   --verbose \
   https://supervisor.example.com/stacks/<stack_uuid>
+```
+
+### Get Stack Log
+
+To retrieve logs for a stack (Server-sent events):
+
+```
+curl --request GET \
+  --silent \
+  --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
+  --verbose \
+  --no-buffer \
+  https://supervisor.example.com/stacks/<stack_uuid>/log?follow=true
+```
+
+To retrieve the last log entry:
+```
+curl --request GET \
+  --silent \
+  --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
+  --verbose \
+  https://supervisor.example.com/stacks/<stack_uuid>/log
 ```
 
 ### Control Stack

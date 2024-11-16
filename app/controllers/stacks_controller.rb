@@ -71,13 +71,15 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
     end
   end
 
-  # GET /stacks/${uuid}/last_logs_entry
   def last_logs_entry
     render json: @stack.log
   end
 
-  # GET /stacks/${uuid}/logs
-  def logs
+  # GET /stacks/${uuid}/log
+  def log
+    follow = params.fetch(:follow, false)
+    return render json: @stack.log unless follow
+
     response.headers['Content-Type'] = 'text/event-stream'
     response.headers['Cache-Control'] = 'no-cache'
     response.headers['Connection'] = 'keep-alive'
