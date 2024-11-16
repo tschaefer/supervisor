@@ -1,6 +1,6 @@
 class StacksController < ApplicationController # rubocop:disable Metrics/ClassLength
   include ActionController::Live
-  include StacksController::StreamsLog
+  include StacksController::StreamsLogs
 
   before_action :set_stack, except: %i[index create]
   before_action :authorize, except: :webhook
@@ -71,11 +71,12 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
     end
   end
 
-  # GET /stacks/${uuid}/last_log
+  # GET /stacks/${uuid}/last_logs_entry
   def last_logs_entry
     render json: @stack.log
   end
 
+  # GET /stacks/${uuid}/logs
   def logs
     response.headers['Content-Type'] = 'text/event-stream'
     response.headers['Cache-Control'] = 'no-cache'

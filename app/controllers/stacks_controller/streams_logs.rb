@@ -1,5 +1,5 @@
 class StacksController
-  module StreamsLog
+  module StreamsLogs
     extend ActiveSupport::Concern
 
     included do
@@ -7,7 +7,7 @@ class StacksController
 
       def stream_logs(sse)
         log = open_log_file!(sse)
-        return if log.nil? # return early if log file not found
+        return if log.nil?
 
         begin
           while File.exist?(log.path)
@@ -16,9 +16,10 @@ class StacksController
             sleep 0.1
           end
 
-          send_close_message(sse, 'EOF')
+          send_close_message(sse, 'Log file removed')
         rescue ActionController::Live::ClientDisconnected, Errno::EPIPE
-          # Handle client disconnection or broken pipe
+          # client disconnected
+          # broken pipe
         ensure
           close_resources(log, sse)
         end
@@ -33,7 +34,7 @@ class StacksController
         end
 
         log = File.open(log_file, 'r')
-        log.seek(0, IO::SEEK_END) # Start at end of file
+        log.seek(0, IO::SEEK_END)
         log
       end
 
