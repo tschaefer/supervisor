@@ -7,7 +7,7 @@
       "check_name": "Send",
       "message": "User controlled method execution",
       "file": "app/controllers/stacks_controller.rb",
-      "line": 58,
+      "line": 61,
       "link": "https://brakemanscanner.org/docs/warning_types/dangerous_send/",
       "code": "Stack.find_by!(:uuid => params[:uuid]).send(params[:command].to_sym)",
       "render_path": null,
@@ -22,8 +22,31 @@
         77
       ],
       "note": "User input is verified in previous code"
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "ecd18b0a8cd3cb99d43f5dcb2686642841fc8763951d1748fd7b384ed4cbab93",
+      "check_name": "FileAccess",
+      "message": "Model attribute used in file name",
+      "file": "app/controllers/stacks_controller/streams_logs.rb",
+      "line": 35,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "File.open(Stack.find_by!(:uuid => params[:uuid]).assets.log_file.to_s, \"r\")",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "StacksController",
+        "method": "open_log_file!"
+      },
+      "user_input": "Stack.find_by!(:uuid => params[:uuid]).assets.log_file.to_s",
+      "confidence": "Medium",
+      "cwe_id": [
+        22
+      ],
+      "note": ""
     }
   ],
-  "updated": "2024-11-02 09:57:25 +0100",
+  "updated": "2024-11-16 08:02:51 +0100",
   "brakeman_version": "6.2.2"
 }

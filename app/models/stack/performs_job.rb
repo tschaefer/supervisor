@@ -46,6 +46,7 @@ class Stack
           uuid
         ]
         slice = attributes.slice(*keys)
+        slice['assets'] = assets
 
         StackDestroyJob.perform_later(slice)
 

@@ -3,6 +3,8 @@ class Stack < ApplicationRecord
   include Stack::PerformsJob
   include Stack::HasStats
 
+  ROOT = ENV.fetch('SUPERVISOR_STACKS_ROOT', Rails.root.join('storage/stack'))
+
   attr_readonly :uuid
 
   serialize :compose_variables, type: Hash, coder: JSON
@@ -34,6 +36,32 @@ class Stack < ApplicationRecord
 
   def webhook?
     strategy == 'webhook'
+  end
+
+  def log
+    log_file = assets.log_file.to_s
+    return if !File.exist?(log_file)
+
+    last_line = nil
+    File.open(log_file, 'r') { |log| log.each { |line| last_line = line } }
+
+    last_line
+  end
+
+  def assets
+    return @assets if defined?(@assets)
+
+    hash = {}.tap do |h|
+      base_dir = ROOT.join(uuid)
+
+      h[:base_dir] = base_dir
+      h[:env_file] = base_dir.join('stack.env')
+      h[:git_dir]  = base_dir.join('git')
+      h[:log_file] = base_dir.join('stack.log')
+    end
+    hash.transform_values!(&:to_s)
+
+    @assets = Hashie::Mash.new(hash)
   end
 
   private

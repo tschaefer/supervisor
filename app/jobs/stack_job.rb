@@ -7,28 +7,21 @@ class StackJob < ApplicationJob
   def perform(stack)
     # On destroy, the relevant stack attributes are passed as a hash
     @stack = stack.is_a?(Hash) ? Hashie::Mash.new(stack) : stack
-    @assets = build_assets
+
+    include_files = @stack.compose_includes.join(' ')
+    @assets = @stack.assets
+                    .merge(include_files:)
 
     execute
   end
 
   private
 
-  def build_assets
-    assets = {}.tap do |hash|
-      base_dir = STACKS_ROOT.join(@stack.uuid)
-
-      hash[:base_dir] = base_dir.to_s
-      hash[:env_file] = base_dir.join('stack.env').to_s
-      hash[:git_dir] = base_dir.join('git').to_s
-      hash[:include_files] = @stack.compose_includes.join(' ')
-    end
-    Hashie::Mash.new(assets)
-  end
-
   def execute
     script = render_script(@stack, @assets)
     run_script(script)
+    stack_log
+    return if noop?
 
     stats_jobs = [
       StackDeployJob,
@@ -36,7 +29,6 @@ class StackJob < ApplicationJob
       StackWebhookJob
     ]
     return if stats_jobs.exclude?(self.class)
-    return if noop?
 
     @stack.update_stats(failed: error?)
   end
@@ -49,9 +41,7 @@ class StackJob < ApplicationJob
   end
 
   def run_script(script)
-    stdouterr, status = Open3.capture2e({}, script)
+    @stdouterr, status = Open3.capture2e({}, script)
     @status = status.exitstatus
-
-    Rails.logger.error { "[#{@stack.uuid}] #{stdouterr}" } if error?
   end
 end
