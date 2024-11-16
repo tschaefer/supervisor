@@ -27,7 +27,7 @@ class Stack < ApplicationRecord
   end
 
   def environment
-    compose_variables.map { |k, v| "#{k}=#{v}" }.join("\n")
+    compose_variables.map { |k, v| "#{k}=\"#{v}\"" }.join("\n")
   end
 
   def polling?
