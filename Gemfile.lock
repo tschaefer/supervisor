@@ -283,6 +283,7 @@ GEM
       rubocop-rspec (~> 3, >= 3.0.1)
     ruby-progressbar (1.13.0)
     securerandom (0.3.2)
+    shellwords (0.2.0)
     shoulda-matchers (6.4.0)
       activesupport (>= 5.2.0)
     solid_queue (1.0.2)
@@ -355,6 +356,7 @@ DEPENDENCIES
   rubocop-rake
   rubocop-rspec
   rubocop-rspec_rails
+  shellwords (>= 0.2.0)
   shoulda-matchers (~> 6.0)
   solid_queue (~> 1.0)
   sqlite3 (>= 1.4)

@@ -34,10 +34,10 @@ class StackJob < ApplicationJob
   end
 
   def render_script(stack, assets)
-    template_path = Rails.root.join("app/jobs/stack_job/templates/#{self.class.script_template}.sh.tt")
-    template = File.read(template_path)
-
-    ERB.new(template, trim_mode: '-').result(binding)
+    ERB.new(
+      Rails.root.join("app/jobs/stack_job/templates/#{self.class.script_template}.sh.tt").read,
+      trim_mode: '-'
+    ).result(binding)
   end
 
   def run_script(script)
