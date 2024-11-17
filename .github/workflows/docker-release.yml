@@ -8,6 +8,8 @@ on:   # yamllint disable-line rule:truthy
   push:
     branches:
       - 'main'
+      - '*/issues/**'
+      - '*/features/**'
 
 jobs:
   build:
