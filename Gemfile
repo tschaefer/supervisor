@@ -18,6 +18,7 @@ gem 'pry-rails'
 # Application requirements
 gem 'addressable'
 gem 'hashie', '>= 5.0.0'
+gem 'shellwords', '>= 0.2.0'
 
 group :development, :test do
   # Code analysis and linting

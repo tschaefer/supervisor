@@ -42,9 +42,8 @@ clone_prepare_stack() {
 
   git fetch origin +${reference}:"<%= stack.uuid %>"
   git checkout "<%= stack.uuid %>"
-cat > "<%= assets.env_file %>" <<EOF
-<%= stack.environment %>
-EOF
+
+  /bin/echo -e <%= stack.environment(shellescape: true) %> > "<%= assets.env_file %>"
 
   cd - >/dev/null
 }

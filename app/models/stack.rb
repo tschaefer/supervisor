@@ -26,8 +26,16 @@ class Stack < ApplicationRecord
     end
   end
 
-  def environment
-    compose_variables.map { |k, v| "#{k}=\"#{v}\"" }.join("\n")
+  def environment(shellescape: false)
+    seperator = shellescape ? '\n' : "\n"
+
+    env = compose_variables.map do |k, v|
+      "#{k}=\"#{v}\""
+    end.join(seperator)
+
+    env = Shellwords.escape(env) if shellescape
+
+    env
   end
 
   def polling?
