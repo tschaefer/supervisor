@@ -283,7 +283,7 @@ GEM
       rubocop-rspec (~> 3, >= 3.0.1)
     ruby-progressbar (1.13.0)
     securerandom (0.3.2)
-    shellwords (0.2.0)
+    shellwords (0.2.1)
     shoulda-matchers (6.4.0)
       activesupport (>= 5.2.0)
     solid_queue (1.0.2)
