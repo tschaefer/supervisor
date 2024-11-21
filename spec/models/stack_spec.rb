@@ -133,9 +133,10 @@ RSpec.describe Stack, type: :model do
         base_dir = stack.assets.base_dir
         FileUtils.mkdir_p(base_dir)
         log_file = stack.assets.log_file
-        File.write(log_file, Faker::Lorem.paragraphs.join("\n"))
+        entries = { created_at: Time.current, message: Faker::Lorem.sentence }
+        File.write(log_file, entries.to_json)
 
-        expect(stack.log).to eq(File.readlines(log_file).last)
+        expect(stack.log.last).to eq(JSON.parse(File.readlines(log_file).last))
       end
 
       it 'returns nil when the log file does not exist' do

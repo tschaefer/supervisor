@@ -71,18 +71,18 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
     end
   end
 
-  def last_logs_entry
-    render json: @stack.log
-  end
-
   # GET /stacks/${uuid}/log
   def log
     follow = params.fetch(:follow, false)
-    return render json: @stack.log unless follow
+    entries = params.fetch(:entries, 1).to_i
 
-    response.headers['Content-Type'] = 'text/event-stream'
-    response.headers['Cache-Control'] = 'no-cache'
-    response.headers['Connection'] = 'keep-alive'
+    return render json: @stack.log(entries:) unless follow
+
+    response.headers.merge!(
+      'Content-Type' => 'text/event-stream',
+      'Cache-Control' => 'no-cache',
+      'Connection' => 'keep-alive'
+    )
 
     response.headers['rack.hijack'] = proc do |stream|
       Thread.new do
@@ -138,4 +138,6 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
       compose_variables: {}
     )
   end
+
+  def fetch_log; end
 end

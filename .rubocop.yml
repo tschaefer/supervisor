@@ -60,6 +60,7 @@ RSpecRails/InferredSpecType:
 
 Metrics/AbcSize:
   CountRepeatedAttributes: false
+  Max: 20
 
 RSpec/AnyInstance:
   Enabled: false

@@ -2,6 +2,7 @@ class Stack < ApplicationRecord
   include Stack::ValidatesAttribute
   include Stack::PerformsJob
   include Stack::HasStats
+  include Stack::ReadsLog
 
   ROOT = ENV.fetch('SUPERVISOR_STACKS_ROOT', Rails.root.join('storage/stack'))
 
@@ -46,14 +47,13 @@ class Stack < ApplicationRecord
     strategy == 'webhook'
   end
 
-  def log
-    log_file = assets.log_file
-    return unless File.exist?(log_file)
+  def log(entries: 1)
+    return unless File.exist?(assets.log_file)
 
-    last_line = nil
-    File.open(log_file, 'r') { |log| log.each { |line| last_line = line } }
+    entries = read_log(assets.log_file, entries:)
+    return if entries.empty?
 
-    last_line
+    entries
   end
 
   def assets
