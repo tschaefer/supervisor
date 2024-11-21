@@ -23,6 +23,7 @@ stop_remove_stack() {
   sudo docker --log-level error \
     compose --progress plain \
     --file "<%= stack.compose_file %>" $files \
+    --env-file "<%= assets.env_file %>" \
     down || true
 
   cd - >/dev/null
