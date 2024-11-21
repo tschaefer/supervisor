@@ -28,7 +28,7 @@ class StacksController
       def open_log_file!(sse)
         log_file = @stack.assets.log_file.to_s
 
-        if !File.exist?(log_file)
+        unless File.exist?(log_file)
           send_close_message(sse, 'No log file found')
           return nil
         end

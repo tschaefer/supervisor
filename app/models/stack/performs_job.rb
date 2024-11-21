@@ -32,7 +32,7 @@ class Stack
         ]
         StackDeployJob.perform_later(self) if saved_changes.keys.any? { |key| keys.include?(key) }
 
-        return if !saved_change_to_strategy?
+        return unless saved_change_to_strategy?
         return cancel_polling_job if webhook?
 
         StackPollingJob.set(wait: polling_interval).perform_later(self)

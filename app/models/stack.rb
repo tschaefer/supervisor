@@ -47,8 +47,8 @@ class Stack < ApplicationRecord
   end
 
   def log
-    log_file = assets.log_file.to_s
-    return if !File.exist?(log_file)
+    log_file = assets.log_file
+    return unless File.exist?(log_file)
 
     last_line = nil
     File.open(log_file, 'r') { |log| log.each { |line| last_line = line } }
@@ -79,7 +79,7 @@ class Stack < ApplicationRecord
   end
 
   def rackify_signature_header
-    return if !changes.key?(:signature_header)
+    return unless changes.key?(:signature_header)
     return if signature_header.blank?
 
     self.signature_header = signature_header.upcase.titleize.tr(' ', '-')

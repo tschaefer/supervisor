@@ -52,9 +52,6 @@ Metrics/BlockLength:
     - 'hash'
     - 'heredoc'
 
-Style/NegatedIf:
-  Enabled: false
-
 Layout/SpaceInsideArrayLiteralBrackets:
   EnforcedStyle: no_space
 
