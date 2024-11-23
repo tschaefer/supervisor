@@ -18,6 +18,10 @@ class Stack
         StackRestartJob.perform_later(self)
       end
 
+      def redeploy
+        StackDeployJob.perform_later(self)
+      end
+
       private
 
       def perform_deploy_job

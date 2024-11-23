@@ -66,7 +66,7 @@ All requests to the API must be authorized using the `Authorization` HTTP header
 - **`PATCH/PUT /stacks/<stack_uuid>`**: Update a stack.
 - **`DELETE /stacks/<stack_uuid>`**: Delete a stack.
 - **`POST /stacks/<stack_uuid>/webhook`**: Trigger a stack update.
-- **`POST /stacks/<stack_uuid>/control`**: Control the stack (start, stop, restart).
+- **`POST /stacks/<stack_uuid>/control`**: Control the stack (start, stop, restart, redeploy).
 - **`GET /stacks/<stack_uuid>/log[?follow=true]`**: Retrieve last stack log entry or stream logs (Server-sent events).
 - **`GET /up`**: Check the health of the Supervisor service. (No authorization required)
 
@@ -203,7 +203,7 @@ curl --request GET \
 
 ### Control Stack
 
-To control a stack (start, stop, restart):
+To control a stack (start, stop, restart, redeploy):
 
 ```
 curl --request POST \

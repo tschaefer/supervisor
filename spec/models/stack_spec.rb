@@ -113,6 +113,15 @@ RSpec.describe Stack, type: :model do
       end
     end
 
+    describe '#redeploy' do
+      it 'enqueues a StackDeployJob' do
+        allow(StackDeployJob).to receive(:perform_later).and_return(true)
+
+        stack.redeploy
+        expect(StackDeployJob).to have_received(:perform_later).with(stack)
+      end
+    end
+
     describe '#assets' do
       it 'returns a Hashie::Mash of stack assets' do
         assets = stack.assets
