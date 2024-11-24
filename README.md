@@ -3,6 +3,27 @@
 
 Supervisor is a Docker GitOps service that allows you to manage `docker-compose` based stacks through a REST API. The minimal input required to manage stacks includes a unique name, a URL to the git repository hosting the stack files, and a strategy for updating the stack (either via polling or webhook). Authentication and authorization are handled via HTTP headers.
 
+* [Supervisor](#supervisor)
+   * [Status](#status)
+   * [Features](#features)
+   * [Requirements](#requirements)
+   * [Running Supervisor](#running-supervisor)
+      * [Exposing Port and HTTPS Requirements](#exposing-port-and-https-requirements)
+   * [REST API](#rest-api)
+      * [Authentication](#authentication)
+      * [API Endpoints](#api-endpoints)
+      * [Creating a Stack](#creating-a-stack)
+         * [Parameters](#parameters)
+      * [List Stacks](#list-stacks)
+      * [Show Stack](#show-stack)
+      * [Show Stack Statistics](#show-stack-statistics)
+      * [Update Stack](#update-stack)
+      * [Delete Stack](#delete-stack)
+      * [Get Stack Log](#get-stack-log)
+      * [Control Stack](#control-stack)
+   * [License](#license)
+   * [Is it any good?](#is-it-any-good)
+
 ## Status
 [![GitHub Actions Workflow CI Status](https://img.shields.io/github/actions/workflow/status/tschaefer/supervisor/ci.yml?label=ci)](https://github.com/tschaefer/supervisor/actions)
 [![GitHub Actions Workflow Docker Release Status](https://img.shields.io/github/actions/workflow/status/tschaefer/supervisor/docker-release.yml?label=docker-release)](https://github.com/tschaefer/supervisor/actions)
@@ -67,7 +88,7 @@ All requests to the API must be authorized using the `Authorization` HTTP header
 - **`DELETE /stacks/<stack_uuid>`**: Delete a stack.
 - **`POST /stacks/<stack_uuid>/webhook`**: Trigger a stack update.
 - **`POST /stacks/<stack_uuid>/control`**: Control the stack (start, stop, restart, redeploy).
-- **`GET /stacks/<stack_uuid>/log[?follow=true]`**: Retrieve last stack log entry or stream logs (Server-sent events).
+- **`GET /stacks/<stack_uuid>/log`**: Retrieve last stack log entries or stream logs (Server-sent events).
 - **`GET /up`**: Check the health of the Supervisor service. (No authorization required)
 
 ### Creating a Stack
@@ -192,13 +213,14 @@ curl --request GET \
   https://supervisor.example.com/stacks/<stack_uuid>/log?follow=true
 ```
 
-To retrieve the last log entry:
+To retrieve the last log entries (default is 1, max is 100):
+
 ```
 curl --request GET \
   --silent \
   --header "Authorization: Bearer 8db7fde4-6a11-462e-ba27-6897b7c9281b" \
   --verbose \
-  https://supervisor.example.com/stacks/<stack_uuid>/log
+  https://supervisor.example.com/stacks/<stack_uuid>/log?entries=50
 ```
 
 ### Control Stack
@@ -217,3 +239,7 @@ curl --request POST \
 ## License
 
 Supervisor is released under the [MIT License](https://opensource.org/licenses/MIT).
+
+## Is it any good?
+
+[Yes.](https://news.ycombinator.com/item?id=3067434)
