@@ -165,7 +165,7 @@ RSpec.describe '/stacks', type: :request do
   describe 'GET /stats' do
     it 'renders a successful response' do
       stack = Stack.create! valid_attributes
-      get stack_stats_url(stack.uuid), headers: valid_headers, as: :json
+      get stats_stack_url(stack.uuid), headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
@@ -181,7 +181,7 @@ RSpec.describe '/stacks', type: :request do
         payload = { message: Faker::Lorem.unique.word }.to_json
         sha256 = SecureRandom.hex(32)
 
-        post stack_webhook_url(stack.uuid), params: JSON.parse(payload),
+        post webhook_stack_url(stack.uuid), params: JSON.parse(payload),
                                             headers: { 'X-Hub-Signature': "sha256=#{sha256}" }, as: :json
         expect(response).not_to be_successful
         expect(response).to have_http_status(:bad_request)
@@ -198,7 +198,7 @@ RSpec.describe '/stacks', type: :request do
         payload = { message: Faker::Lorem.unique.word }.to_json
         sha256 = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), stack.signature_secret, payload)
 
-        post stack_webhook_url(stack.uuid), params: JSON.parse(payload),
+        post webhook_stack_url(stack.uuid), params: JSON.parse(payload),
                                             headers: { 'X-Hub-Signature': "sha256=#{sha256}" }, as: :json
         expect(response).not_to be_successful
         expect(response).to have_http_status(:conflict)
@@ -216,7 +216,7 @@ RSpec.describe '/stacks', type: :request do
         payload = { message: Faker::Lorem.unique.word }.to_json
         sha256 = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), stack.signature_secret, payload)
 
-        post stack_webhook_url(stack.uuid), params: JSON.parse(payload),
+        post webhook_stack_url(stack.uuid), params: JSON.parse(payload),
                                             headers: { 'X-Hub-Signature': "sha256=#{sha256}" }, as: :json
         expect(response).to be_successful
         expect(response).to have_http_status(:accepted)
@@ -229,7 +229,7 @@ RSpec.describe '/stacks', type: :request do
     context 'with invalid command' do
       it 'renders a response with error' do
         stack = Stack.create! valid_attributes
-        post stack_control_url(stack.uuid), params: { command: 'invalid' }, headers: valid_headers, as: :json
+        post control_stack_url(stack.uuid), params: { command: 'invalid' }, headers: valid_headers, as: :json
         expect(response).not_to be_successful
         expect(response).to have_http_status(:bad_request)
         expect(response.body).to include('Invalid control command')
@@ -239,7 +239,7 @@ RSpec.describe '/stacks', type: :request do
     context 'with valid command' do
       it 'renders a response with success' do
         stack = Stack.create! valid_attributes
-        post stack_control_url(stack.uuid), params: { command: 'start' }, headers: valid_headers, as: :json
+        post control_stack_url(stack.uuid), params: { command: 'start' }, headers: valid_headers, as: :json
         expect(response).to be_successful
         expect(response).to have_http_status(:no_content)
       end
@@ -249,7 +249,7 @@ RSpec.describe '/stacks', type: :request do
   describe 'GET /log' do
     it 'renders a successful response' do
       stack = Stack.create! valid_attributes
-      get stack_log_url(stack.uuid), headers: valid_headers, as: :json
+      get log_stack_url(stack.uuid), headers: valid_headers, as: :json
       expect(response).to be_successful
     end
   end
