@@ -12,10 +12,24 @@ __compose_includes() {
     printf "%s" "${includes}"
 }
 
+__resolve_path() {
+    local file="$1"
+    if [ ! -L "$file" ]; then
+        echo "$file"
+        return
+    fi
+
+    local resolved_file
+    resolved_file=$(readlink -m "$file")
+    local relative_file
+    relative_file=$(realpath --relative-to="<%= assets.git_dir %>" "$resolved_file")
+    echo "$relative_file"
+}
+
 fetch_diff_stack() {
   cd "<%= assets.git_dir %>" >/dev/null
   git fetch origin "<%= stack.git_reference %>"
-  git diff --quiet FETCH_HEAD && exit 254
+  git diff --name-only FETCH_HEAD || exit 254
   cd - >/dev/null
 }
 
@@ -23,8 +37,9 @@ has_changed_stack() {
   cd "<%= assets.git_dir %>" >/dev/null
 
   local has_changes="false"
-  for file in $(git diff --name-only origin); do
-      if [ "$file" = "<%= stack.compose_file %>" ]; then
+  for file in $(git diff --name-only FETCH_HEAD); do
+      resolved=$(__resolve_path "<%= stack.compose_file %>")
+      if [ "$file" = "$resolved" ]; then
               has_changes="true"
               break
       fi
@@ -37,7 +52,8 @@ has_changed_stack() {
       OIFS=$IFS
       IFS=' '
       for include in $include_files; do
-        if [ "$file" = "$include" ]; then
+        resolved=$(__resolve_path "$include")
+        if [ "$file" = "$resolved" ]; then
             has_changes="true"
             break
         fi
