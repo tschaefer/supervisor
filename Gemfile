@@ -6,7 +6,7 @@ gem 'bootsnap', require: false
 gem 'puma', '>= 5.0'
 gem 'rails', '~> 8.0.0'
 gem 'rails-healthcheck'
-gem 'solid_queue', '~> 1.0'
+gem 'solid_queue', '~> 1.1'
 gem 'sqlite3', '>= 1.4'
 
 # Rails console enhancements
