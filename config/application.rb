@@ -20,6 +20,11 @@ module Supervisor
     # Common ones are `templates`, `generators`, or `middleware`, for example.
     config.autoload_lib(ignore: %w[assets tasks])
 
+    # Ignore stack job script templates.
+    Rails.autoloaders.each do |autoloader|
+      autoloader.ignore(Rails.root.join('app/jobs/stack_job/templates'))
+    end
+
     # Configuration for the application, engines, and railties goes here.
     #
     # These settings can be overridden in specific environments using the files
@@ -32,5 +37,8 @@ module Supervisor
     # Middleware like session, flash, cookies can be added back manually.
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = true
+
+    # Rails application key generator is not used.
+    config.secret_key_base = 'not_used'
   end
 end
