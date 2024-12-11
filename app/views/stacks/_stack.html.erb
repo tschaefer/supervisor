@@ -1,0 +1,20 @@
+<%= turbo_stream_from stack %>
+
+<tr id="<%= dom_id stack %>">
+  <td>
+    <% if stack.healthy %>
+      <span class="alert alert-green">
+        <i class="fa-solid fa-bell"></i>
+      </span>
+    <% else %>
+      <span class="alert alert-red">
+        <i class="fa-solid fa-bell"></i>
+      </span>
+    <% end %>
+  </td>
+  <td><%= stack.name %></td>
+  <td><%= stack.uuid %></td>
+  <td><%= stack.last_run %></td>
+  <td><%= stack.processed %></td>
+  <td><%= stack.failed %></td>
+</tr>

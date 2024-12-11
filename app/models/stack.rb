@@ -4,6 +4,8 @@ class Stack < ApplicationRecord
   include Stack::HasStats
   include Stack::ReadsLog
 
+  broadcasts_refreshes
+
   ROOT = ENV.fetch('SUPERVISOR_STACKS_ROOT', Rails.root.join('storage/stack'))
 
   attr_readonly :uuid
