@@ -50,10 +50,10 @@ class Stack < ApplicationRecord
   end
 
   def log(entries: 1)
-    return unless File.exist?(assets.log_file)
+    return [] unless File.exist?(assets.log_file)
 
     entries = read_log(assets.log_file, entries:)
-    return if entries.empty?
+    return [] if entries.empty?
 
     entries
   end

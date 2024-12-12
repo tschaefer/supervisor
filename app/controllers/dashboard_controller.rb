@@ -1,19 +1,19 @@
-class MonitorController < ApplicationController
+class DashboardController < ApplicationController
   def self.username
     ENV.fetch(
-      'SUPERVISOR_MONITOR_USERNAME',
+      'SUPERVISOR_DASHBOARD_USERNAME',
       Rails.application.credentials.supervisor_monitor_username
     ) || 'supervisor'
   end
 
   def self.password
     ENV.fetch(
-      'SUPERVISOR_MONITOR_PASSWORD',
+      'SUPERVISOR_DASHBOARD_PASSWORD',
       Rails.application.credentials.supervisor_monitor_password
     ) || 'supervisor'
   end
 
-  def dashboard
+  def index
     authenticate_or_request_with_http_basic do |username, password|
       username == self.class.username && password == self.class.password
     end

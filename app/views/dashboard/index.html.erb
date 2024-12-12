@@ -1,0 +1,58 @@
+<%= turbo_stream_from "stacks" %>
+
+<div class="container-fluid">
+  <nav class="navbar text-bg-dark fixed-top" data-bs-theme="dark">
+    <div class="container-fluid">
+      <span class="navbar-brand mb-0 h1">Supervisor 🚀</span>
+    </div>
+  </nav>
+  <div class="row align-items-start" id="main">
+      <div class="col-7">
+        <div class="card text-bg-dark">
+          <div class="card-header">
+            <h5>Stacks</h5>
+          </div>
+          <div class="card-body">
+            <table id="stacks" class="table table-dark table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Status</th>
+                  <th>Name</th>
+                  <th>Last run</th>
+                  <th>Processed</th>
+                  <th>Failed</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% @stacks.each do |stack| %>
+                <%= render stack %>
+              <% end %>
+              </tbody>
+            </table>
+        </div>
+      </div>
+    </div>
+    <div class="col-5">
+      <div class="card text-bg-dark">
+        <div class="card-header">
+          <h5>Log</h5>
+        </div>
+        <div class="card-body">
+          <div id="logs" style="height: 500px;">
+            <turbo-frame id="log-frame">
+              <pre style="margin-top: -15px">
+                <code>
+<%=
+  uuid = params[:uuid] || @stacks&.first&.uuid
+  @stacks&.find_by(uuid: uuid)&.log(entries: 25)&.join("\n") || "No logs available."
+%>
+                </code>
+              </pre>
+            </turbo-frame>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -10,5 +10,5 @@ Rails.application.routes.draw do
     end
   end
 
-  get 'monitor/dashboard'
+  get '/dashboard', to: 'dashboard#index'
 end

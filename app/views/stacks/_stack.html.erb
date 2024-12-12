@@ -1,19 +1,19 @@
 <%= turbo_stream_from stack %>
 
 <tr id="<%= dom_id stack %>">
+  <td><%= link_to stack.uuid, request.path + "?uuid=#{stack.uuid}", data: { turbo_frame: "log-frame" }, class: "link-light" %></td>
   <td>
     <% if stack.healthy %>
-      <span class="alert alert-green">
+      <span class="status status-healthy">
         <i class="fa-solid fa-bell"></i>
       </span>
     <% else %>
-      <span class="alert alert-red">
+      <span class="status status-unhealthy">
         <i class="fa-solid fa-bell"></i>
       </span>
     <% end %>
   </td>
   <td><%= stack.name %></td>
-  <td><%= stack.uuid %></td>
   <td><%= stack.last_run %></td>
   <td><%= stack.processed %></td>
   <td><%= stack.failed %></td>
