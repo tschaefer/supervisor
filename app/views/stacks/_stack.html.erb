@@ -1,7 +1,15 @@
 <%= turbo_stream_from stack %>
 
 <tr id="<%= dom_id stack %>">
-  <td><%= link_to stack.uuid, request.path + "?uuid=#{stack.uuid}", data: { turbo_frame: "log-frame" }, class: "link-light" %></td>
+  <td>
+    <%= link_to stack.uuid, request.path + "?uuid=#{stack.uuid}",
+          data: {
+            action: "log#select",
+            uuid: stack.uuid,
+            turbo_frame: "log-frame"
+          },
+          class: "link-light" %>
+  </td>
   <td>
     <% if stack.healthy %>
       <span class="status status-healthy">

@@ -32,6 +32,7 @@ body {
 }
 
 .status-unhealthy i {
+    color: red;
     animation: blink 3s infinite;
 }
 

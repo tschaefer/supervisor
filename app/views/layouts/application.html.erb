@@ -6,7 +6,7 @@
     <%= stylesheet_link_tag :app, "data-turbo-track": "reload" %>
     <%= javascript_importmap_tags %>
     <%= turbo_refresh_method_tag :morph %>
-    <%= turbo_refresh_scroll_tag :reset %>
+    <%= turbo_refresh_scroll_tag :preserve %>
   </head>
   <body>
     <%= yield %>

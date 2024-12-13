@@ -11,6 +11,7 @@ gem 'rails-healthcheck'
 gem 'solid_cable'
 gem 'solid_queue', '~> 1.1'
 gem 'sqlite3', '>= 1.4'
+gem 'stimulus-rails'
 gem 'turbo-rails'
 
 # Rails console enhancements
