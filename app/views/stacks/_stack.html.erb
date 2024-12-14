@@ -20,6 +20,12 @@
     <% end %>
   </td>
   <td><%= stack.name %></td>
+  <td>
+    <%= stack.strategy %>
+    <% if stack.strategy == "polling" %>
+      <sup class="text-secondary"> <%= ChronicDuration.output(stack.polling_interval, format: :short) %></sup>
+    <% end %>
+  </td>
   <td><%= stack.last_run %></td>
   <td><%= stack.processed %></td>
   <td><%= stack.failed %></td>

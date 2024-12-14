@@ -22,6 +22,7 @@ gem 'pry-rails'
 
 # Application requirements
 gem 'addressable'
+gem 'chronic_duration', '>= 0.10.6'
 gem 'hashie', '>= 5.0.0'
 gem 'shellwords', '>= 0.2.0'
 
