@@ -4,9 +4,7 @@
     onclick="window.location='<%= request.path + "?uuid=#{stack.uuid}" %>'"
     class="clickable-row">
   <td>
-    <span data-uuid="<%= stack.uuid %>" data-turbo-frame="log-frame">
-      <%= stack.uuid %>
-    </span>
+    <%= stack.uuid %>
   </td>
   <td>
     <% if stack.healthy %>

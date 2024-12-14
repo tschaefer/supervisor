@@ -1,7 +1,7 @@
 import { Controller } from "@hotwired/stimulus";
 
 export default class extends Controller {
-  static targets = ["selectedUuid"]; // Access the hidden input
+  static targets = ["selectedUuid"];
 
   connect() {
     document.addEventListener("turbo:load", this.restoreLog.bind(this));

@@ -43,10 +43,13 @@
           <div class="card-body">
             <div id="logs">
             <turbo-frame id="log-frame" data-turbo-permanent>
-              <% if params[:uuid] || Stack.first&.uuid %>
-                <% stack = Stack.find_by(uuid: params[:uuid] || Stack.first&.uuid) %>
-                <h6><%= stack.uuid %></h6>
-                <pre><code><%= stack.log(entries: 25)&.join("\n") || '' %></code></pre>
+              <% uuid = params[:uuid] || @stacks&.first&.uuid %>
+              <% if uuid %>
+                <% stack = Stack.find_by(uuid: uuid) %>
+                <% if stack %>
+                  <h6><%= stack.uuid %></h6>
+                  <pre><code><%= stack.log(entries: 25)&.join("\n") || '' %></code></pre>
+                <% end %>
               <% end %>
             </turbo-frame>
           </div>
