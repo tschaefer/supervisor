@@ -1,6 +1,6 @@
 class ApplicationController < ActionController::Base
   protect_from_forgery with: :null_session
-  allow_browser versions: :modern
+  allow_browser versions: :modern unless Rails.env.development?
 
   def self.api_key
     @api_key ||= lambda do

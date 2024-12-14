@@ -7,54 +7,47 @@
         <span class="navbar-brand mb-0 h1">Supervisor 🚀</span>
       </div>
     </nav>
-    <div class="row align-items-start" id="main">
-        <div class="col-7">
-          <div class="card text-bg-dark">
-            <div class="card-header">
-              <h5>Stacks</h5>
-            </div>
-            <div class="card-body">
-              <table id="stacks" class="table table-dark table-hover">
-                <thead>
-                  <tr>
-                    <th>#</th>
-                    <th>Status</th>
-                    <th>Name</th>
-                    <th>Last run</th>
-                    <th>Processed</th>
-                    <th>Failed</th>
-                  </tr>
-                </thead>
-                <tbody>
-                <% @stacks.each do |stack| %>
-                  <%= render stack %>
-                <% end %>
-                </tbody>
-              </table>
+    <div class="row" id="main">
+      <div class="col col-lg-7">
+        <div class="card text-bg-dark">
+          <div class="card-header">
+            <h5>Stacks</h5>
+          </div>
+          <div class="card-body">
+            <table id="stacks" class="table table-dark table-hover">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Status</th>
+                  <th>Name</th>
+                  <th>Last run</th>
+                  <th>Processed</th>
+                  <th>Failed</th>
+                </tr>
+              </thead>
+              <tbody>
+              <% @stacks.each do |stack| %>
+                <%= render stack %>
+              <% end %>
+              </tbody>
+            </table>
           </div>
         </div>
       </div>
-      <div class="col-5">
+      <div class="col col-lg-5">
         <div class="card text-bg-dark">
           <div class="card-header">
             <h5>Log</h5>
           </div>
           <div class="card-body">
-            <div id="logs" style="height: 500px;">
+            <div id="logs">
             <turbo-frame id="log-frame" data-turbo-permanent>
-              <% uuid = params[:uuid] || @stacks&.first&.uuid %>
-              <% if uuid.present? %>
-                <strong>
-                  <%= uuid %>
-                </strong>
-                <pre style="margin-top: -15px">
-                  <code>
-<%= @stacks&.find_by(uuid: uuid)&.log(entries: 25)&.join("\n") || '' %>
-                  </code>
-                </pre>
+              <% if params[:uuid] || Stack.first&.uuid %>
+                <% stack = Stack.find_by(uuid: params[:uuid] || Stack.first&.uuid) %>
+                <h6><%= stack.uuid %></h6>
+                <pre><code><%= stack.log(entries: 25)&.join("\n") || '' %></code></pre>
               <% end %>
             </turbo-frame>
-            </div>
           </div>
         </div>
       </div>
