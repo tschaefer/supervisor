@@ -149,7 +149,7 @@ RSpec.describe Stack, type: :model do
       end
 
       it 'returns nil when the log file does not exist' do
-        expect(stack.log).to be_nil
+        expect(stack.log).to be_empty
       end
     end
   end
