@@ -1,14 +1,12 @@
 <%= turbo_stream_from stack %>
 
-<tr id="<%= dom_id stack %>">
+<tr id="<%= dom_id stack %>"
+    onclick="window.location='<%= request.path + "?uuid=#{stack.uuid}" %>'"
+    class="clickable-row">
   <td>
-    <%= link_to stack.uuid, request.path + "?uuid=#{stack.uuid}",
-          data: {
-            action: "log#select",
-            uuid: stack.uuid,
-            turbo_frame: "log-frame"
-          },
-          class: "link-light" %>
+    <span data-uuid="<%= stack.uuid %>" data-turbo-frame="log-frame">
+      <%= stack.uuid %>
+    </span>
   </td>
   <td>
     <% if stack.healthy %>

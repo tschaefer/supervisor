@@ -39,6 +39,10 @@ body {
     animation: blink 3s infinite;
 }
 
+.clickable-row {
+  cursor: pointer;
+}
+
 /* Blinking Effect */
 @keyframes blink {
     0%, 100% {
