@@ -7,11 +7,16 @@
         <span class="navbar-brand mb-0 h1">Supervisor 🚀</span>
       </div>
     </nav>
-    <div class="row" id="main">
+    <div class="row row-gap-3" id="main">
       <div class="col col-lg-7">
         <div class="card text-bg-dark">
           <div class="card-header">
             <h5>Stacks</h5>
+            <span class="text-secondary">
+              Total: <%= @stacks.count %> |
+              Healthy:  <%= @stacks.select(&:healthy).count %> |
+              Unhealthy: <%= @stacks.reject(&:healthy).count %>
+            </span>
           </div>
           <div class="card-body">
             <table id="stacks" class="table table-dark table-hover">
@@ -36,24 +41,24 @@
         </div>
       </div>
       <div class="col col-lg-5">
+      <turbo-frame id="log-frame" data-turbo-permanent>
+        <% uuid = params[:uuid] || @stacks&.first&.uuid %>
+        <% if uuid %>
+          <% stack = Stack.find_by(uuid: uuid) %>
+        <% end %>
         <div class="card text-bg-dark">
           <div class="card-header">
             <h5>Log</h5>
+            <% if stack %>
+            <span class="text-secondary"><%= stack.name %></span>
+            <% end %>
           </div>
           <div class="card-body">
             <div id="logs">
-            <turbo-frame id="log-frame" data-turbo-permanent>
-              <% uuid = params[:uuid] || @stacks&.first&.uuid %>
-              <% if uuid %>
-                <% stack = Stack.find_by(uuid: uuid) %>
-                <% if stack %>
-                  <h6><%= stack.uuid %></h6>
-                  <pre><code><%= stack.log(entries: 25)&.join("\n") || '' %></code></pre>
-                <% end %>
-              <% end %>
-            </turbo-frame>
-          </div>
+              <pre><code><%= stack&.log(entries: 25)&.join("\n") || '' %></code></pre>
+            </div>
         </div>
+      </turbo-frame>
       </div>
     </div>
   </div>
