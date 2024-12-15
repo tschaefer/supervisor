@@ -30,21 +30,6 @@ body {
     margin-top: 57px;
 }
 
-.status-unhealthy i {
-    color: red;
-    animation: blink 3s infinite;
-}
-
 .clickable-row {
   cursor: pointer;
-}
-
-/* Blinking Effect */
-@keyframes blink {
-    0%, 100% {
-        opacity: 1;
-    }
-    50% {
-        opacity: 0;
-    }
 }
