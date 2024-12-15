@@ -1,0 +1,30 @@
+<%= turbo_stream_from stack %>
+
+<tr id="<%= dom_id stack %>"
+    onclick="window.location='<%= request.path + "?uuid=#{stack.uuid}" %>'"
+    class="clickable-row">
+  <td>
+    <%= stack.uuid %>
+  </td>
+  <td>
+    <% if stack.healthy %>
+      <span class="status status-healthy text-success">
+        <i class="fa-solid fa-check"></i>
+      </span>
+    <% else %>
+      <span class="status status-unhealthy text-danger">
+        <i class="fa-solid fa-xmark"></i>
+      </span>
+    <% end %>
+  </td>
+  <td><%= stack.name %></td>
+  <td>
+    <%= stack.strategy %>
+    <% if stack.strategy == "polling" %>
+      <sup class="text-secondary"> <%= ChronicDuration.output(stack.polling_interval, format: :short) %></sup>
+    <% end %>
+  </td>
+  <td><%= stack.last_run %></td>
+  <td><%= stack.processed %></td>
+  <td><%= stack.failed %></td>
+</tr>

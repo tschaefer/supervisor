@@ -9,4 +9,6 @@ Rails.application.routes.draw do
       get   'log'
     end
   end
+
+  get '/dashboard', to: 'dashboard#index'
 end

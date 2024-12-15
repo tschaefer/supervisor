@@ -54,7 +54,7 @@ RUN curl -fsL https://get.docker.com | sh && \
 # Run and own only the runtime files as a non-root user for security
 RUN groupadd --system --gid 1001 rails && \
     useradd rails --uid 1001 --gid 1001 --create-home --shell /bin/bash && \
-    chown -R rails:rails db log storage tmp
+    chown -R rails:rails db log storage tmp public
 
 # Install sudo and allow the rails user to run docker
 RUN install_packages sudo && \

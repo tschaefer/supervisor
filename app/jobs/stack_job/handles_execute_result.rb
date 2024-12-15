@@ -26,6 +26,7 @@ class StackJob
         File.open(stack_log_file, 'a') do |log|
           log.puts({ created_at: Time.now.utc.iso8601(3), message: stack_log_message }.to_json)
         end
+        @stack.touch
       end
 
       def stack_log_message
