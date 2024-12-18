@@ -15,6 +15,13 @@ gem 'ostruct', require: false # Silence obsolete warnings for Ruby 3.5
 gem 'pry-byebug'
 gem 'pry-rails'
 
+# Metrics
+# https://dev.37signals.com/kamal-prometheus/
+gem 'yabeda'
+gem 'yabeda-prometheus-mmap'
+gem 'yabeda-puma-plugin'
+gem 'yabeda-rails'
+
 # Application requirements
 gem 'addressable'
 gem 'hashie', '>= 5.0.0'
