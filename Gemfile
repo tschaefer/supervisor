@@ -27,6 +27,9 @@ gem 'hashie', '>= 5.0.0'
 gem 'shellwords', '>= 0.2.0'
 
 group :development, :test do
+  # Hot reload on html, css, js changes
+  gem 'hotwire-spark'
+
   # Code analysis and linting
   gem 'brakeman', require: false
   gem 'overcommit', require: false
