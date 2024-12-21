@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe 'Monitors', type: :request do
+RSpec.describe 'Dashboard', type: :request do
   describe 'GET /dashboard' do
     it 'returns http success' do
       username = DashboardController.username
