@@ -2,13 +2,39 @@ require 'rails_helper'
 
 RSpec.describe 'Dashboard', type: :request do
   describe 'GET /dashboard' do
-    it 'returns http success' do
-      username = DashboardController.username
-      password = DashboardController.password
-      auth = ActionController::HttpAuthentication::Basic.encode_credentials(username, password)
+    def basic_auth(username: nil, password: nil)
+      user = username.presence || DashboardController.username
+      pass = password.presence || DashboardController.password
+      ActionController::HttpAuthentication::Basic.encode_credentials(user, pass)
+    end
 
-      get '/dashboard', headers: { 'HTTP_AUTHORIZATION' => auth }
-      expect(response).to have_http_status(:success)
+    context 'with no credentials' do
+      it 'returns http unauthorized' do
+        get '/dashboard'
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'with invalid credentials' do
+      it 'returns http unauthorized' do
+        get '/dashboard', headers: { 'HTTP_AUTHORIZATION' => basic_auth(username: 'root') }
+        expect(response).to have_http_status(:unauthorized)
+      end
+    end
+
+    context 'with valid credentials' do
+      it 'returns http success' do
+        get '/dashboard', headers: { 'HTTP_AUTHORIZATION' => basic_auth }
+        expect(response).to have_http_status(:success)
+      end
+    end
+
+    context 'with stack UUID parameter' do
+      it 'stores UUID in DOM' do
+        stack_uuid = SecureRandom.uuid
+        get "/dashboard?uuid=#{stack_uuid}", headers: { 'HTTP_AUTHORIZATION' => basic_auth }
+        expect(response.body).to include(stack_uuid)
+      end
     end
   end
 end

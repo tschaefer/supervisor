@@ -43,5 +43,9 @@ RSpec.describe StacksController, type: :routing do
     it 'routes to #log' do
       expect(get: "/stacks/#{uuid}/log").to route_to('stacks#log', uuid:)
     end
+
+    it 'routes to #dashboard' do
+      expect(get: '/dashboard').to route_to('dashboard#index')
+    end
   end
 end
