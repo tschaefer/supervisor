@@ -3,11 +3,16 @@ source 'https://rubygems.org'
 # Basic Rails gems
 gem 'activerecord-enhancedsqlite3-adapter', '~> 0.8.0'
 gem 'bootsnap', require: false
+gem 'importmap-rails'
+gem 'propshaft'
 gem 'puma', '>= 5.0'
 gem 'rails', '~> 8.0.1'
 gem 'rails-healthcheck'
+gem 'solid_cable'
 gem 'solid_queue', '~> 1.1'
 gem 'sqlite3', '>= 1.4'
+gem 'stimulus-rails'
+gem 'turbo-rails'
 
 # Rails console enhancements
 gem 'awesome_print'
@@ -17,10 +22,14 @@ gem 'pry-rails'
 
 # Application requirements
 gem 'addressable'
+gem 'chronic_duration', '>= 0.10.6'
 gem 'hashie', '>= 5.0.0'
 gem 'shellwords', '>= 0.2.0'
 
 group :development, :test do
+  # Hot reload on html, css, js changes
+  gem 'hotwire-spark'
+
   # Code analysis and linting
   gem 'brakeman', require: false
   gem 'overcommit', require: false

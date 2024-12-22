@@ -23,7 +23,11 @@ class Stack
           last_entries.unshift(leftover) unless leftover.empty?
         end
 
-        last_entries.last(entries).map { |entry| JSON.parse(entry) }
+        last_entries.last(entries).filter_map do |entry|
+          JSON.parse(entry)
+        rescue JSON::ParserError
+          next
+        end
       end
 
       private

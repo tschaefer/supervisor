@@ -21,6 +21,7 @@ Supervisor is a Docker GitOps service that allows you to manage `docker-compose`
       * [Delete Stack](#delete-stack)
       * [Get Stack Log](#get-stack-log)
       * [Control Stack](#control-stack)
+   * [Dashboard](#dashboard)
    * [License](#license)
    * [Is it any good?](#is-it-any-good)
 
@@ -235,6 +236,17 @@ curl --request POST \
   --json '{ "command": "start" }' \
   https://supervisor.example.com/stacks/<stack_uuid>/control
 ```
+
+## Dashboard
+
+Supervisor provides a simple dashboard to view and monitor stacks. The
+dashboard is accessible at the URL path `/dashboard` of the Supervisor service.
+The access is restricted by basic authentication. The credentials are set
+via the environment variables `SUPERVISOR_DASHBOARD_USERNAME` and
+`SUPERVISOR_DASHBOARD_PASSWORD`. The default credentials username is
+`supervisor` and the password is `supervisor` as well.
+
+![Dashboard view](.screenshots/supervisor-dashboard.jpg "Dashboard view")
 
 ## License
 
