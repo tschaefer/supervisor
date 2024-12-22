@@ -239,7 +239,7 @@ curl --request POST \
 
 ## Dashboard
 
-Supervisor provides a simple dashboard to view and manage stacks. The
+Supervisor provides a simple dashboard to view and monitor stacks. The
 dashboard is accessible at the URL path `/dashboard` of the Supervisor service.
 The access is restricted by basic authentication. The credentials are set
 via the environment variables `SUPERVISOR_DASHBOARD_USERNAME` and
