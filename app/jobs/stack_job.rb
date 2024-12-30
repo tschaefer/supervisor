@@ -21,16 +21,7 @@ class StackJob < ApplicationJob
     script = render_script(@stack, @assets)
     run_script(script)
     stack_log
-    return if noop?
-
-    stats_jobs = [
-      StackDeployJob,
-      StackPollingJob,
-      StackWebhookJob
-    ]
-    return if stats_jobs.exclude?(self.class)
-
-    @stack.update_stats(failed: error?)
+    stack_stats
   end
 
   def render_script(stack, assets)
