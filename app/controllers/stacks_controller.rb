@@ -18,6 +18,7 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
   def show
     # Getting stats is a separate request.
     stack = @stack.attributes.except('processed', 'failed', 'last_run')
+    stack['healthy'] = @stack.healthy
     render json: stack
   end
 
