@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[8.0].define(version: 2024_12_11_160223) do
+ActiveRecord::Schema[8.0].define(version: 2025_01_03_150343) do
   create_table "people", force: :cascade do |t|
     t.string "name"
     t.string "gender"
@@ -38,6 +38,7 @@ ActiveRecord::Schema[8.0].define(version: 2024_12_11_160223) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.boolean "healthy", default: false, null: false
+    t.string "last_action"
     t.index ["name"], name: "index_stacks_on_name", unique: true
     t.index ["uuid"], name: "index_stacks_on_uuid", unique: true
   end

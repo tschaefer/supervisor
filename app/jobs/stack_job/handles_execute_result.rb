@@ -9,19 +9,11 @@ class StackJob
       const_set(:NOOP, 254)
 
       def success?
-        @status == OK
-      end
-
-      def noop?
-        @status == NOOP
+        @status == OK || @status == NOOP
       end
 
       def error?
-        !success? && !noop?
-      end
-
-      def op?
-        !noop?
+        !success?
       end
 
       def stack_log
@@ -36,23 +28,18 @@ class StackJob
       end
 
       def stack_stats
-        stats_jobs = [
-          StackDeployJob,
-          StackPollingJob,
-          StackWebhookJob
-        ]
-        return if stats_jobs.exclude?(self.class)
+        @stack.update_stats(failed: error?, action: __action.split.second)
+      end
 
-        @stack.update_stats(processed: op?, failed: error?)
+      def __action
+        self.class.name.titleize.humanize.chomp(' job')
       end
 
       def __log_message
-        action = self.class.name.titleize.humanize.chomp(' job')
+        action = __action
 
         if success?
           "#{action} succeeded"
-        elsif noop?
-          "#{action} was a no-op"
         else
           "#{action} failed"
         end

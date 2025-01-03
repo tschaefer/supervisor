@@ -7,21 +7,24 @@ class Stack
         Hashie::Mash.new(
           processed:,
           failed:,
-          last_run:
+          last_run:,
+          last_action:
         )
       end
 
-      def update_stats(processed: false, failed: false)
+      def update_stats(failed: false, action: nil)
         healthy = !failed
 
-        processed = processed ? self.processed + 1 : self.processed
+        processed = self.processed + 1
         failed = failed ? self.failed + 1 : self.failed
         last_run = processed ? Time.current : self.last_run
+        last_action = action || 'unknown'
 
         update(
           processed: processed,
           failed: failed,
           last_run: last_run,
+          last_action: last_action,
           healthy: healthy
         )
       end
