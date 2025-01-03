@@ -4,4 +4,5 @@ AllCops:
     - 'bin/*'
     - 'db/schema.rb'
     - 'db/queue_schema.rb'
+    - 'db/cable_schema.rb'
     - 'vendor/**/*'
