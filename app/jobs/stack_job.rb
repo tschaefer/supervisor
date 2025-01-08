@@ -12,6 +12,8 @@ class StackJob < ApplicationJob
     @assets = @stack.assets
                     .merge(include_files:)
 
+    @status = OK
+
     execute
   end
 
@@ -20,8 +22,11 @@ class StackJob < ApplicationJob
   def execute
     script = render_script(@stack, @assets)
     run_script(script)
+    return if instance_of?(StackDestroyJob)
+
     stack_log
     stack_stats
+    stack_health
   end
 
   def render_script(stack, assets)
