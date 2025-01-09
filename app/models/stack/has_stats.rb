@@ -13,8 +13,6 @@ class Stack
       end
 
       def update_stats(failed: false, action: nil)
-        healthy = !failed
-
         processed = self.processed + 1
         failed = failed ? self.failed + 1 : self.failed
         last_run = processed ? Time.current : self.last_run
@@ -24,8 +22,7 @@ class Stack
           processed: processed,
           failed: failed,
           last_run: last_run,
-          last_action: last_action,
-          healthy: healthy
+          last_action: last_action
         )
       end
     end
