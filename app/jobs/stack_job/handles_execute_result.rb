@@ -26,11 +26,11 @@ class StackJob
       end
 
       def stack_stats
-        @stack.update_stats(failed: error?, action: __action.split.second)
+        @stack.update_stats(succeeded: success?, action: __action.split.second)
       end
 
       def stack_health
-        @stack.update(healthy: !error?)
+        @stack.update(healthy: success?)
       end
 
       def __action
