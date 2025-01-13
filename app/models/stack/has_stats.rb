@@ -20,11 +20,21 @@ class Stack
           last_action: action || 'unknown'
         )
 
-        Yabeda.supervisor.stack_processed_count.increment(
+        status = succeeded ? 'succeeded' : 'failed'
+
+        Yabeda.supervisor.stack_jobs_executed_total.increment(
           {
             name: name,
             action: last_action,
             status: succeeded ? 'succeeded' : 'failed'
+          },
+          by: 1
+        )
+
+        Yabeda.supervisor.send(:"stack_jobs_#{status}_total").increment(
+          {
+            name: name,
+            action: last_action
           },
           by: 1
         )
