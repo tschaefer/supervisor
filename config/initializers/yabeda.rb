@@ -27,17 +27,17 @@ Yabeda.configure do
     gauge :stacks_total do
       comment 'Total number of stacks'
     end
-    gauge :stack_healthy_total do
+    gauge :stacks_healthy_total do
       comment 'Total number of healthy stacks'
     end
-    gauge :stack_unhealthy_total do
+    gauge :stacks_unhealthy_total do
       comment 'Total number of unhealthy stacks'
     end
 
     collect do
       supervisor.stacks_total.set({}, Stack.count)
-      supervisor.stack_healthy_total.set({}, Stack.where(healthy: true).count)
-      supervisor.stack_unhealthy_total.set({}, Stack.where(healthy: false).count)
+      supervisor.stacks_healthy_total.set({}, Stack.where(healthy: true).count)
+      supervisor.stacks_unhealthy_total.set({}, Stack.where(healthy: false).count)
     end
   end
 end
