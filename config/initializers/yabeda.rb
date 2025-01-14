@@ -26,5 +26,3 @@ Yabeda.configure do
     end
   end
 end
-
-Yabeda.configure!
