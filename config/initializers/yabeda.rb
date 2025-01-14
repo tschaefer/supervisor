@@ -24,5 +24,12 @@ Yabeda.configure do
         30, 60, 120, 300, 1800, 3600, 86_400
       ].freeze
     end
+    gauge :stacks_total do
+      comment 'Total number of stacks'
+    end
+
+    collect do
+      supervisor.stacks_total.set({}, Stack.count)
+    end
   end
 end
