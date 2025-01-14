@@ -39,6 +39,10 @@ module Supervisor
     # Skip views, helpers and assets when generating a new resource.
     config.api_only = false
 
+    # Remove session and cookie middleware.
+    config.middleware.delete(ActionDispatch::Cookies)
+    config.middleware.delete(ActionDispatch::Session::CookieStore)
+
     # Rails application key generator is not used.
     config.secret_key_base = 'not_used'
   end
