@@ -16,7 +16,7 @@ Yabeda.configure do
       comment 'The total number of stack jobs that succeeded.'
       tags %i[name action]
     end
-    histogram :stack_jobs_execution_time_seconds do
+    histogram :stack_jobs_execution_time do
       comment 'The time taken to execute stack jobs, measured in seconds.'
       unit :seconds
       buckets [
