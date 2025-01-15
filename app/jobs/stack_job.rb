@@ -21,7 +21,9 @@ class StackJob < ApplicationJob
 
   def execute
     script = render_script(@stack, @assets)
-    run_script(script)
+    Yabeda.supervisor.stack_jobs_execution_time.measure do
+      run_script(script)
+    end
     return if instance_of?(StackDestroyJob)
 
     stack_log

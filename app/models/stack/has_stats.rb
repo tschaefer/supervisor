@@ -12,17 +12,31 @@ class Stack
         )
       end
 
-      def update_stats(failed: false, action: nil)
-        processed = self.processed + 1
-        failed = failed ? self.failed + 1 : self.failed
-        last_run = processed ? Time.current : self.last_run
-        last_action = action || 'unknown'
-
+      def update_stats(succeeded: false, action: nil)
         update(
-          processed: processed,
-          failed: failed,
-          last_run: last_run,
-          last_action: last_action
+          processed: processed + 1,
+          failed: succeeded ? failed : failed + 1,
+          last_run: Time.current,
+          last_action: action || 'unknown'
+        )
+
+        status = succeeded ? 'succeeded' : 'failed'
+
+        Yabeda.supervisor.stack_jobs_executed_total.increment(
+          {
+            name: name,
+            action: last_action,
+            status: succeeded ? 'succeeded' : 'failed'
+          },
+          by: 1
+        )
+
+        Yabeda.supervisor.send(:"stack_jobs_#{status}_total").increment(
+          {
+            name: name,
+            action: last_action
+          },
+          by: 1
         )
       end
     end

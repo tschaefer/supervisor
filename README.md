@@ -21,6 +21,7 @@ Supervisor is a Docker GitOps service that allows you to manage `docker-compose`
       * [Delete Stack](#delete-stack)
       * [Get Stack Log](#get-stack-log)
       * [Control Stack](#control-stack)
+   * [Metrics](#metrics)
    * [Dashboard](#dashboard)
    * [License](#license)
    * [Is it any good?](#is-it-any-good)
@@ -236,6 +237,19 @@ curl --request POST \
   --json '{ "command": "start" }' \
   https://supervisor.example.com/stacks/<stack_uuid>/control
 ```
+
+## Metrics
+
+To retrieve Prometheus metrics, you can access the
+`http://supervisor.example.com:9394/metrics` endpoint.
+
+  * `supervisor_total_stacks`: The total number of stacks. (gauge)
+  * `supervisor_total_healthy_stacks`: The total number of healthy stacks. (gauge)
+  * `supervisor_total_unhealthy_stacks`: The total number of unhealthy stacks. (gauge)
+  * `supervisor_jobs_execution_time`: The time taken to execute stack jobs, measured in seconds. (histogram)
+  * `supervisor_jobs_executed_total`: The total number of stack jobs executed. (counter)
+  * `supervisor_jobs_succeeded_total`: The total number of stack jobs that succeeded. (counter)
+  * `supervisor_jobs_failed_total`: The total number of stack jobs that failed. (counter)
 
 ## Dashboard
 
