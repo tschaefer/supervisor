@@ -5,13 +5,13 @@
     <nav class="navbar text-bg-dark fixed-top" data-bs-theme="dark">
       <div class="container-fluid">
         <span class="navbar-brand mb-0 h1">Supervisor 🚀</span>
-        <span class="navbar-text text-secondary d-none d-sm-block">
-          <sup><%= host_info %></sup>
+        <span class="navbar-text text-secondary d-none d-sm-block host-info">
+          <%= host_info %>
         </span>
       </div>
     </nav>
     <div class="row row-gap-3" id="main">
-      <div class="col col-lg-7">
+      <div class="col col-lg-12">
         <div class="card text-bg-dark">
           <div class="card-header">
             <h5>Stacks</h5>
@@ -21,7 +21,7 @@
               Unhealthy: <%= @stacks.reject(&:healthy).count %>
             </span>
           </div>
-          <div class="card-body">
+          <div class="card-body table-responsive">
             <table id="stacks" class="table table-dark table-hover">
               <thead>
                 <tr>
@@ -43,7 +43,74 @@
           </div>
         </div>
       </div>
+    </div>
+    <div class="row row-gap-3" style="margin-top: 7px;">
       <div class="col col-lg-5">
+        <% uuid = params[:uuid] || @stacks&.first&.uuid %>
+        <% if uuid %>
+          <% stack = Stack.find_by(uuid: uuid) %>
+        <% end %>
+        <div class="card text-bg-dark">
+          <div class="card-header">
+            <h5>Details</h5>
+            <% if stack %>
+            <span class="text-secondary"><%= stack.name %> - <%= stack.uuid %></span>
+            <% end %>
+          </div>
+          <div class="card-body table-responsive">
+          <% if stack %>
+            <% attributes = filter_secrets(stack.attributes) %>
+            <table class="table table-dark table-hover">
+              <tbody>
+                <tr>
+                  <td>Repository</td>
+                  <td><%= link_to nil, attributes.git_repository %></td>
+                </tr>
+                <tr>
+                  <td>Reference</td>
+                  <td><%= attributes.git_reference %></td>
+                </tr>
+                <tr>
+                  <td>Username</td>
+                  <td><%= attributes.git_username %></td>
+                </tr>
+                <tr>
+                  <td>Token</td>
+                  <td><%= attributes['git_token'] %></td>
+                <tr>
+                  <td>Compose File</td>
+                  <td><%= attributes.compose_file %></td>
+                </tr>
+                <tr>
+                  <td>Compose Includes</td>
+                  <td>
+                    <ul>
+                    <% attributes.compose_includes.each do |compose| %>
+                      <li><%= compose %></li>
+                    <% end %>
+                    </ul>
+                  </td>
+                </tr>
+                <tr>
+                  <td>Compose Variables</td>
+                  <td>
+                  <% if attributes.compose_variables.empty? %>
+                    -
+                  <% else %>
+                    <ul>
+                    <% attributes.compose_variables.each do |key, value| %>
+                      <li><%= key %>=<%= value %></li>
+                    <% end %>
+                    </ul>
+                  <% end %>
+                </tr>
+              </tbody>
+            </table>
+          <% end %>
+          </div>
+        </div>
+      </div>
+      <div class="col col-lg-3">
       <turbo-frame id="log-frame" data-turbo-permanent>
         <% uuid = params[:uuid] || @stacks&.first&.uuid %>
         <% if uuid %>
@@ -56,14 +123,53 @@
             <span class="text-secondary"><%= stack.name %> - <%= stack.uuid %></span>
             <% end %>
           </div>
-          <div class="card-body">
+          <div class="card-body table-responsive">
             <div id="logs">
-              <pre><code><%= stack&.log(entries: 25)&.join("\n") || '' %></code></pre>
+              <% if stack %>
+                <table class="table table-dark table-hover">
+                  <thead>
+                    <tr>
+                      <th>Run at</th>
+                      <th>Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <% stack.log(entries: 10).each do |log| %>
+                      <tr>
+                        <td><%= log['run_at'] %></td>
+                        <td><%= log['action'] %> <%= log['status'] %></td>
+                      </tr>
+                    <% end %>
+                  </tbody>
+                </table>
+                <p>
+                  <% relpath = Pathname.new(stack.assets['log_file']).relative_path_from(Rails.root).to_s %>
+                  <%= link_to "View all logs", relpath, class: "btn btn-primary btn-secondary", download: "#{stack.uuid}.log" %>
+                </p>
+              <% end %>
             </div>
+          </div>
         </div>
       </turbo-frame>
-      </div>
     </div>
+    <div class="col col-lg-4">
+      <% uuid = params[:uuid] || @stacks&.first&.uuid %>
+      <% if uuid %>
+        <% stack = Stack.find_by(uuid: uuid) %>
+      <% end %>
+      <div class="card text-bg-dark">
+        <div class="card-header">
+          <h5>Statistics</h5>
+          <% if stack %>
+          <span class="text-secondary"><%= stack.name %> - <%= stack.uuid %></span>
+          <% end %>
+        </div>
+        <div class="card-body">
+          <% if stack %>
+            <canvas id="stack-chart"></canvas>
+          <% end %>
+        </div>
+      </div>
   </div>
   <input type="hidden" id="selected-uuid"
          data-log-target="selectedUuid"

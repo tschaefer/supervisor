@@ -25,3 +25,16 @@ body {
   height: 1em;
   vertical-align: -0.125em;
 }
+
+a {
+  color: #ffffff;
+}
+
+ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.host-info {
+  font-size: 0.75em;
+}

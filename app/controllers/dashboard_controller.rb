@@ -20,4 +20,18 @@ class DashboardController < ApplicationController
 
     @stacks = Stack.all
   end
+
+  def log
+    authenticate_or_request_with_http_basic do |username, password|
+      username == self.class.username && password == self.class.password
+    end
+
+    stack = Stack.find_by(uuid: params[:uuid])
+    send_file(
+      stack.assets.log_file,
+      type: 'text/plain',
+      disposition: 'attachment',
+      filename: "#{stack.uuid}.log"
+    )
+  end
 end
