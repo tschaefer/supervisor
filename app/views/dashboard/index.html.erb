@@ -30,6 +30,7 @@
                   <th>Name</th>
                   <th class="d-none d-sm-table-cell">Strategy</th>
                   <th class="d-none d-sm-table-cell">Last run</th>
+                  <th class="d-none d-sm-table-cell">Last action</th>
                   <th class="d-none d-sm-table-cell">Processed</th>
                   <th class="d-none d-sm-table-cell">Failed</th>
                 </tr>
@@ -167,8 +168,10 @@
         </div>
         <div class="card-body">
           <% if stack %>
-            <% log = stack.log(entries: 10) %>
-            <% actions = log.group_by { it['action'] }.map { |k, v| [k, v.count] } %>
+            <%
+              log = stack.log(entries: 10)
+              actions = log.group_by { it['action'] }.map { |k, v| [k, v.count] }
+            %>
             <%=
               pie_chart actions,
                 legend: 'left',
