@@ -170,7 +170,7 @@
           <% if stack %>
             <%
               log = stack.log(entries: 10)
-              actions = log.group_by { it['action'] }.map { |k, v| [k, v.count] }
+              actions = log.group_by { |entry| entry['action'] }.map { |k, v| [k, v.count] }
             %>
             <%=
               pie_chart actions,
