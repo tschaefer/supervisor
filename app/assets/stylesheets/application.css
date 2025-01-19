@@ -16,7 +16,9 @@ body {
   background-color: #343a40;
 }
 
-#main { margin-top: 57px; }
+#main {
+  margin-top: 3.6rem;
+}
 
 .table-row-click { cursor: pointer; }
 
@@ -37,4 +39,8 @@ ul {
 
 .host-info {
   font-size: 0.75em;
+}
+
+.row-gap-bottom {
+  margin-bottom: .5rem;
 }
