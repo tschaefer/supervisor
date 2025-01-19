@@ -25,6 +25,11 @@ export default class extends Controller {
       this.currentUuidValue = uuid;
       Turbo.visit(`/dashboard?uuid=${uuid}`, { frame: logFrame.id });
     }
+    const statisticsFrame = document.getElementById("statistics-frame");
+    if (statisticsFrame) {
+      this.currentUuidValue = uuid;
+      Turbo.visit(`/dashboard?uuid=${uuid}`, { frame: statisticsFrame.id });
+    }
   }
 }
 

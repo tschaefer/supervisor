@@ -153,6 +153,7 @@
       </turbo-frame>
     </div>
     <div class="col col-lg-4">
+      <turbo-frame id="statistics-frame" data-turbo-permanent>
       <% uuid = params[:uuid] || @stacks&.first&.uuid %>
       <% if uuid %>
         <% stack = Stack.find_by(uuid: uuid) %>
@@ -166,10 +167,20 @@
         </div>
         <div class="card-body">
           <% if stack %>
-            <canvas id="stack-chart"></canvas>
+            <% log = stack.log(entries: 10) %>
+            <% actions = log.group_by { it['action'] }.map { |k, v| [k, v.count] } %>
+            <%=
+              pie_chart actions,
+                legend: 'left',
+                donut: true,
+                dataset: { borderWidth: 0, cutout: '75%' },
+                library: { plugins: { legend: { labels: { usePointStyle: true } } } }
+            %>
           <% end %>
         </div>
       </div>
+      </turbo-frame>
+    </div>
   </div>
   <input type="hidden" id="selected-uuid"
          data-log-target="selectedUuid"
