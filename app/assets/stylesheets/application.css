@@ -12,8 +12,8 @@
 *                    { scrollbar-width: none; }
 
 body {
-  font-family: Ubuntu, sans-serif;
   background-color: #343a40;
+  font-size: .9rem;
 }
 
 #main {
