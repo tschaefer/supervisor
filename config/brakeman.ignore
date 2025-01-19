@@ -7,7 +7,7 @@
       "check_name": "Send",
       "message": "User controlled method execution",
       "file": "app/controllers/stacks_controller.rb",
-      "line": 61,
+      "line": 62,
       "link": "https://brakemanscanner.org/docs/warning_types/dangerous_send/",
       "code": "Stack.find_by!(:uuid => params[:uuid]).send(params[:command].to_sym)",
       "render_path": null,
@@ -26,11 +26,34 @@
     {
       "warning_type": "File Access",
       "warning_code": 16,
+      "fingerprint": "6dcb98888eb2d69f7ce925a4f278e06aa0e0841ff276caea3122b13f3ce96b14",
+      "check_name": "SendFile",
+      "message": "Model attribute used in file name",
+      "file": "app/controllers/dashboard_controller.rb",
+      "line": 31,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "send_file(Stack.find_by(:uuid => params[:uuid]).assets.log_file, :type => \"text/plain\", :disposition => \"attachment\", :filename => (\"#{Stack.find_by(:uuid => params[:uuid]).uuid}.log\"))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "DashboardController",
+        "method": "log"
+      },
+      "user_input": "Stack.find_by(:uuid => params[:uuid]).assets.log_file",
+      "confidence": "Medium",
+      "cwe_id": [
+        22
+      ],
+      "note": "Allow stack log file download"
+    },
+    {
+      "warning_type": "File Access",
+      "warning_code": 16,
       "fingerprint": "ecd18b0a8cd3cb99d43f5dcb2686642841fc8763951d1748fd7b384ed4cbab93",
       "check_name": "FileAccess",
       "message": "Model attribute used in file name",
       "file": "app/controllers/stacks_controller/streams_logs.rb",
-      "line": 35,
+      "line": 36,
       "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
       "code": "File.open(Stack.find_by!(:uuid => params[:uuid]).assets.log_file.to_s, \"r\")",
       "render_path": null,
@@ -47,6 +70,5 @@
       "note": ""
     }
   ],
-  "updated": "2024-11-16 08:02:51 +0100",
-  "brakeman_version": "6.2.2"
+  "brakeman_version": "7.0.0"
 }
