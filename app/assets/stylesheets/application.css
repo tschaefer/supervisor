@@ -28,9 +28,10 @@ body {
   vertical-align: -0.125em;
 }
 
-ul {
+.table-ul {
   list-style-type: none;
   padding: 0;
+  margin: 0;
 }
 
 .host-info {

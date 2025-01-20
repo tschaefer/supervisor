@@ -71,7 +71,7 @@
               <tbody>
                 <tr>
                   <td>Git Repository</td>
-                  <td><%= link_to nil, attributes.git_repository %></td>
+                  <td><%= link_to nil, attributes.git_repository, class: 'link-light' %></td>
                 </tr>
                 <tr>
                   <td>Git Reference</td>
@@ -96,7 +96,7 @@
                 <tr>
                   <td>Compose Includes</td>
                   <td>
-                    <ul>
+                    <ul class="table-ul">
                     <% attributes.compose_includes.each do |compose| %>
                       <li><%= compose %></li>
                     <% end %>
@@ -108,7 +108,7 @@
                 <tr>
                   <td>Compose Variables</td>
                   <td>
-                    <ul>
+                    <ul class="table-ul">
                     <% attributes.compose_variables.each do |key, value| %>
                       <li><%= key %>=<%= value %></li>
                     <% end %>
@@ -140,7 +140,7 @@
         <% end %>
         <div class="card text-bg-dark h-100">
           <div class="card-header">
-            <h5>Log</h5>
+            <h5>Logs</h5>
             <% if stack %>
             <span class="text-secondary"><%= stack.uuid %></span>
             <% end %>
