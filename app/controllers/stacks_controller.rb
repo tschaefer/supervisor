@@ -124,7 +124,7 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
   end
 
   def stack_params
-    params.require(:stack).permit(
+    attributes = [
       :compose_file,
       :git_reference,
       :git_repository,
@@ -135,9 +135,10 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
       :signature_header,
       :signature_secret,
       :strategy,
-      compose_includes: [],
-      compose_variables: {}
-    )
+      { compose_includes: [],
+        compose_variables: {} }
+    ]
+    params.expect(stack: attributes)
   end
 
   def fetch_log; end
