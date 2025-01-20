@@ -77,10 +77,13 @@
                   <td>Git Reference</td>
                   <td><%= attributes.git_reference %></td>
                 </tr>
+                <% if attributes.git_username.present? %>
                 <tr>
                   <td>Git Username</td>
                   <td><%= attributes.git_username %></td>
                 </tr>
+                <% end %>
+                <% if attributes.git_token.present? %>
                 <tr>
                   <td>Git Token</td>
                   <td><%= attributes['git_token'] %></td>
@@ -88,6 +91,8 @@
                   <td>Compose File</td>
                   <td><%= attributes.compose_file %></td>
                 </tr>
+                <% end %>
+                <% if attributes.compose_includes.present? %>
                 <tr>
                   <td>Compose Includes</td>
                   <td>
@@ -98,6 +103,8 @@
                     </ul>
                   </td>
                 </tr>
+                <% end %>
+                <% if attributes.compose_variables.present? %>
                 <tr>
                   <td>Compose Variables</td>
                   <td>
@@ -108,7 +115,8 @@
                     </ul>
                   </td>
                 </tr>
-                <% if stack.strategy == 'webhook' %>
+                <% end %>
+                <% if attributes.strategy == 'webhook' %>
                   <tr>
                     <td>Signature Header</td>
                     <td><%= attributes.signature_header %></td>
