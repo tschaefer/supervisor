@@ -16,7 +16,7 @@ body {
   font-size: .9rem;
 }
 
-#main {
+.row-gap-navbar {
   margin-top: 3.6rem;
 }
 
@@ -26,10 +26,6 @@ body {
   width: 1em;
   height: 1em;
   vertical-align: -0.125em;
-}
-
-a {
-  color: #ffffff;
 }
 
 ul {

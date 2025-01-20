@@ -10,7 +10,7 @@
         </span>
       </div>
     </nav>
-    <div class="row row-gap-bottom row-gap-1" id="main">
+    <div class="row row-gap-2 row-gap-navbar row-gap-bottom">
       <div class="col col-lg-12">
         <div class="card text-bg-dark">
           <div class="card-header">
@@ -45,38 +45,44 @@
         </div>
       </div>
     </div>
-    <div class="row row-gap-bottom row-gap-2">
+    <div class="row row-gap-2 align-items-stretch">
       <div class="col col-lg-5">
         <% uuid = params[:uuid] || @stacks&.first&.uuid %>
         <% if uuid %>
           <% stack = Stack.find_by(uuid: uuid) %>
         <% end %>
-        <div class="card text-bg-dark">
+        <div class="card text-bg-dark h-100">
           <div class="card-header">
             <h5>Details</h5>
             <% if stack %>
-            <span class="text-secondary"><%= stack.name %> - <%= stack.uuid %></span>
+            <span class="text-secondary"><%= stack.uuid %></span>
             <% end %>
           </div>
           <div class="card-body table-responsive">
           <% if stack %>
             <% attributes = filter_secrets(stack.attributes) %>
-            <table class="table table-dark table-hover">
+            <table class="table table-hover table-dark">
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
               <tbody>
                 <tr>
-                  <td>Repository</td>
+                  <td>Git Repository</td>
                   <td><%= link_to nil, attributes.git_repository %></td>
                 </tr>
                 <tr>
-                  <td>Reference</td>
+                  <td>Git Reference</td>
                   <td><%= attributes.git_reference %></td>
                 </tr>
                 <tr>
-                  <td>Username</td>
+                  <td>Git Username</td>
                   <td><%= attributes.git_username %></td>
                 </tr>
                 <tr>
-                  <td>Token</td>
+                  <td>Git Token</td>
                   <td><%= attributes['git_token'] %></td>
                 <tr>
                   <td>Compose File</td>
@@ -95,16 +101,23 @@
                 <tr>
                   <td>Compose Variables</td>
                   <td>
-                  <% if attributes.compose_variables.empty? %>
-                    -
-                  <% else %>
                     <ul>
                     <% attributes.compose_variables.each do |key, value| %>
                       <li><%= key %>=<%= value %></li>
                     <% end %>
                     </ul>
-                  <% end %>
+                  </td>
                 </tr>
+                <% if stack.strategy == 'webhook' %>
+                  <tr>
+                    <td>Signature Header</td>
+                    <td><%= attributes.signature_header %></td>
+                  </tr>
+                  <tr>
+                    <td>Signature Secret</td>
+                    <td><%= attributes.signature_secret %></td>
+                  </tr>
+                <% end %>
               </tbody>
             </table>
           <% end %>
@@ -117,11 +130,11 @@
         <% if uuid %>
           <% stack = Stack.find_by(uuid: uuid) %>
         <% end %>
-        <div class="card text-bg-dark">
+        <div class="card text-bg-dark h-100">
           <div class="card-header">
             <h5>Log</h5>
             <% if stack %>
-            <span class="text-secondary"><%= stack.name %> - <%= stack.uuid %></span>
+            <span class="text-secondary"><%= stack.uuid %></span>
             <% end %>
           </div>
           <div class="card-body table-responsive">
@@ -159,14 +172,14 @@
       <% if uuid %>
         <% stack = Stack.find_by(uuid: uuid) %>
       <% end %>
-      <div class="card text-bg-dark">
+      <div class="card text-bg-dark h-100">
         <div class="card-header">
           <h5>Statistics</h5>
           <% if stack %>
-          <span class="text-secondary"><%= stack.name %> - <%= stack.uuid %></span>
+          <span class="text-secondary"><%= stack.uuid %></span>
           <% end %>
         </div>
-        <div class="card-body">
+        <div class="card-body d-flex justify-content-center align-items-center">
           <% if stack %>
             <%
               log = stack.log(entries: 10)
@@ -177,7 +190,8 @@
                 legend: 'left',
                 donut: true,
                 dataset: { borderWidth: 0, cutout: '75%' },
-                library: { plugins: { legend: { labels: { usePointStyle: true } } } }
+                library: { plugins: { legend: { labels: { usePointStyle: true } } } },
+                loading: ''
             %>
           <% end %>
         </div>
