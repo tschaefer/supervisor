@@ -1,0 +1,25 @@
+<div class="card text-bg-dark h-100">
+  <div class="card-header">
+    <h5>Statistics</h5>
+    <% if stack %>
+    <span class="text-secondary"><%= stack.uuid %></span>
+    <% end %>
+  </div>
+  <div class="card-body">
+    <% if stack %>
+      <%
+        log = stack.log(entries: 10)
+        actions = log.group_by { |entry| entry['action'] }.map { |k, v| [k, v.count] }
+      %>
+      <%=
+        pie_chart actions,
+          legend: 'left',
+          donut: true,
+          dataset: { borderWidth: 0, cutout: '75%' },
+          library: { plugins: { legend: { labels: { usePointStyle: true } } } },
+          loading: ''
+      %>
+    <% end %>
+  </div>
+</div>
+
