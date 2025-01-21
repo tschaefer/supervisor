@@ -1,8 +1,8 @@
 module Supervisor
   class Docker
     def info
-      bin = '/usr/bin/docker'
-      args = %w[info --format json]
+      bin = '/usr/bin/sudo'
+      args = %w[/usr/bin/docker info --format json]
 
       stdout, stderr, status = Open3.capture3(bin, *args)
       raise "Failed to run docker info: #{stderr}" unless status.success?
