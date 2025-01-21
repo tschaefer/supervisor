@@ -47,10 +47,13 @@
       <div class="col col-lg-4">
         <div class="card text-bg-dark h-100">
           <div class="card-header">
+            <% info = docker_info %>
             <h5>Docker</h5>
+            <span class="text-secondary">
+              Version: <%= info.server_version %>
+            </span>
           </div>
           <div class="card-body table-responsive">
-            <% info = docker_info %>
             <table class="table table-dark table-hover">
               <thead>
                 <tr>
@@ -60,6 +63,7 @@
               </thead>
               <tbody>
                 <% info.each do |key, value| %>
+                  <% next if key == 'server_version' %>
                   <tr>
                     <td><%= key.humanize.titleize %></td>
                     <td><%= value %></td>
