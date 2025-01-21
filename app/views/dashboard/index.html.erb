@@ -4,15 +4,15 @@
   <div class="container-fluid">
     <nav class="navbar text-bg-dark fixed-top" data-bs-theme="dark">
       <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">Supervisor 🚀</span>
+        <span class="navbar-brand mb-0 h1">🚀 Supervisor</span>
         <span class="navbar-text text-secondary d-none d-sm-block host-info">
           <%= host_info %>
         </span>
       </div>
     </nav>
-    <div class="row row-gap-2 row-gap-navbar row-gap-bottom">
-      <div class="col col-lg-12">
-        <div class="card text-bg-dark">
+    <div class="row row-gap-2 row-gap-navbar row-gap-bottom align-items-stretch">
+      <div class="col col-lg-8">
+        <div class="card text-bg-dark h-100">
           <div class="card-header">
             <h5>Stacks</h5>
             <span class="text-secondary">
@@ -44,14 +44,39 @@
           </div>
         </div>
       </div>
+      <div class="col col-lg-4">
+        <div class="card text-bg-dark h-100">
+          <div class="card-header">
+            <h5>Docker</h5>
+          </div>
+          <div class="card-body table-responsive">
+            <% info = docker_info %>
+            <table class="table table-dark table-hover">
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% info.each do |key, value| %>
+                  <tr>
+                    <td><%= key.humanize.titleize %></td>
+                    <td><%= value %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
     </div>
     <div class="row row-gap-2 align-items-stretch">
     <%
       uuid = params[:uuid] || @stacks&.first&.uuid
-      if uuid
-        stack = Stack.find_by(uuid: uuid)
-      end
+      stack = uuid ? Stack.find_by(uuid: uuid) : nil
     %>
+    <% if stack %>
       <div class="col col-lg-5">
         <%= render partial: "stacks/details", locals: { stack: stack } %>
       </div>
@@ -59,11 +84,24 @@
       <turbo-frame id="log-frame" data-turbo-permanent>
         <%= render partial: "stacks/logs", locals: { stack: stack } %>
       </turbo-frame>
-    </div>
-    <div class="col col-lg-4">
+      </div>
+      <div class="col col-lg-4">
       <turbo-frame id="statistics-frame" data-turbo-permanent>
         <%= render partial: "stacks/statistics", locals: { stack: stack } %>
       </turbo-frame>
+      </div>
+    <% else %>
+      <div class="col col-lg-12">
+        <div class="card text-bg-dark h-100">
+          <div class="card-header">
+            <h5>No stack selected</h5>
+          </div>
+          <div class="card-body">
+            <p>Select a stack from the list to view details.</p>
+          </div>
+        </div>
+      </div>
+    <% end %>
     </div>
   </div>
   <input type="hidden" id="selected-uuid"
