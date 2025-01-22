@@ -11,7 +11,7 @@ module Supervisor
         info[:ip] = ip
         info[:hostname] = hostname
       else
-        info = fetch_info
+        info = fetch_info(ip)
         info.symbolize_keys!
         info[:ip] = ip
         info[:hostname] = hostname
@@ -42,13 +42,13 @@ module Supervisor
         resolver = Resolv::DNS.new.tap { |r| r.timeouts = 1 }
         resolver.getname(hostname_or_ip).to_s
       rescue Resolv::ResolvError
-        Rails.logger.error { "Failed to resolve IP #{@ip}" }
+        Rails.logger.error { "Failed to resolve IP #{hostname_or_ip}" }
         nil
       end
     end
 
-    def fetch_info
-      JSON.parse(Net::HTTP.get(URI("https://ipinfo.io/#{@ip}")))
+    def fetch_info(ip)
+      JSON.parse(Net::HTTP.get(URI("https://ipinfo.io/#{ip}")))
     rescue StandardError => e
       Rails.logger.error { "Failed to fetch IP info for #{ip}: #{e.message}" }
       {}

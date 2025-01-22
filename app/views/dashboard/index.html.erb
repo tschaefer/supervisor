@@ -50,7 +50,7 @@
             <% info = docker_info %>
             <h5>Docker</h5>
             <span class="text-secondary">
-              Version: <%= info.server_version %>
+              Version: <%= info[:server_version] %>
             </span>
           </div>
           <div class="card-body table-responsive">
@@ -63,9 +63,9 @@
               </thead>
               <tbody>
                 <% info.each do |key, value| %>
-                  <% next if key == 'server_version' %>
+                  <% next if key.to_s == 'server_version' %>
                   <tr>
-                    <td><%= key.humanize.titleize %></td>
+                    <td><%= key.to_s.humanize.titleize %></td>
                     <td><%= value %></td>
                   </tr>
                 <% end %>

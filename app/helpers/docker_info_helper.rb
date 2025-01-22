@@ -1,5 +1,5 @@
 module DockerInfoHelper
   def docker_info
-    Hashie::Mash.new(Supervisor::Docker.new.info)
+    Supervisor::Docker.new.to_h
   end
 end
