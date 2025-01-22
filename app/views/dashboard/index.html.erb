@@ -5,7 +5,7 @@
     <nav class="navbar text-bg-dark fixed-top" data-bs-theme="dark">
       <div class="container-fluid">
         <span class="navbar-brand mb-0 h1">🚀 Supervisor</span>
-        <span class="navbar-text text-secondary d-none d-sm-block host-info">
+        <span class="navbar-text text-secondary d-none d-sm-block">
           <%= host_info %>
         </span>
       </div>
@@ -75,7 +75,7 @@
         </div>
       </div>
     </div>
-    <div class="row row-gap-2 align-items-stretch">
+    <div class="row row-gap-2 row-gap-bottom align-items-stretch">
     <%
       uuid = params[:uuid] || @stacks&.first&.uuid
       stack = uuid ? Stack.find_by(uuid: uuid) : nil

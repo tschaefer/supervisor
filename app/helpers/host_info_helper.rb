@@ -6,6 +6,13 @@ module HostInfoHelper
       Supervisor::HostInfo.new(server_name).to_h
     end
 
-    "Hostname: #{info[:hostname]} | Address: #{info[:ip]} | Location: #{info[:location]}"
+    location = %i[city region country org].filter_map do |key|
+      next if info[key].blank?
+
+      info[key]
+    end.join(', ')
+    location = '-' if location.blank?
+
+    "Hostname: #{info[:hostname]} | IP: #{info[:ip]} | Location: #{location}"
   end
 end

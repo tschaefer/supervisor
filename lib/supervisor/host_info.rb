@@ -1,57 +1,66 @@
 module Supervisor
   class HostInfo
-    attr_reader :hostname, :ip, :location
-
     def initialize(hostname_or_ip)
-      @hostname_or_ip = hostname_or_ip
-      @resolver = Resolv::DNS.new.tap { |r| r.timeouts = 1 }
+      ip = effective_ip(hostname_or_ip)
+      hostname = effective_hostname(hostname_or_ip)
 
-      @ip = effective_ip
-      @hostname = effective_hostname
-      @location = effective_location
-    end
+      info = {}
 
-    def to_h
-      { hostname: hostname, ip: ip, location: location }
-    end
+      ipaddr = IPAddr.new(ip)
+      if ipaddr.private? || ipaddr.loopback? || ipaddr.link_local?
+        info[:ip] = ip
+        info[:hostname] = hostname
+      else
+        info = fetch_info
+        info.symbolize_keys!
+        info[:ip] = ip
+        info[:hostname] = hostname
+        info.delete(:readme)
+      end
 
-    def to_json(*)
-      to_h.to_json(*)
+      update_instance(info)
     end
 
     private
 
-    def effective_ip
-      return @hostname_or_ip if (@hostname_or_ip =~ Resolv::AddressRegex).present?
+    def effective_ip(hostname_or_ip)
+      return hostname_or_ip if (hostname_or_ip =~ Resolv::AddressRegex).present?
 
       begin
-        @resolver.getaddress(@hostname_or_ip).to_s
+        resolver = Resolv::DNS.new.tap { |r| r.timeouts = 1 }
+        resolver.getaddress(hostname_or_ip).to_s
       rescue Resolv::ResolvError
-        Rails.logger.error { "Failed to resolve hostname #{@hostname_or_ip}" }
-        '-'
+        Rails.logger.error { "Failed to resolve hostname #{hostname_or_ip}" }
+        nil
       end
     end
 
-    def effective_hostname
-      return @hostname_or_ip if (@hostname_or_ip =~ Resolv::AddressRegex).nil?
+    def effective_hostname(hostname_or_ip)
+      return hostname_or_ip if (hostname_or_ip =~ Resolv::AddressRegex).nil?
 
-      @resolver.getname(@ip).to_s
-    rescue Resolv::ResolvError
-      Rails.logger.error { "Failed to resolve IP #{@ip}" }
-      '-'
+      begin
+        resolver = Resolv::DNS.new.tap { |r| r.timeouts = 1 }
+        resolver.getname(hostname_or_ip).to_s
+      rescue Resolv::ResolvError
+        Rails.logger.error { "Failed to resolve IP #{@ip}" }
+        nil
+      end
     end
 
-    def effective_location
-      return '-' if IPAddr.new(@ip).private? || IPAddr.new(@ip).loopback?
+    def fetch_info
+      JSON.parse(Net::HTTP.get(URI("https://ipinfo.io/#{@ip}")))
+    rescue StandardError => e
+      Rails.logger.error { "Failed to fetch IP info for #{ip}: #{e.message}" }
+      {}
+    end
 
-      info = begin
-        JSON.parse(Net::HTTP.get(URI("http://ipinfo.io/#{@ip}")))
-      rescue StandardError => e
-        Rails.logger.error { "Failed to fetch IP info for #{ip}: #{e.message}" }
-        {}
+    def update_instance(info)
+      info.each do |key, value|
+        define_singleton_method(key) { value }
       end
 
-      info.slice('city', 'region', 'country', 'org').values.join(', ') || 'Unknown'
+      define_singleton_method(:to_h) { info }
+      define_singleton_method(:to_json) { info.to_json }
     end
   end
 end
