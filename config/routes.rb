@@ -12,4 +12,6 @@ Rails.application.routes.draw do
 
   get '/dashboard', to: 'dashboard#index'
   get '/storage/stack/:uuid/stack.log', to: 'dashboard#log'
+
+  root to: 'dashboard#index'
 end
