@@ -16,7 +16,7 @@
             </tr>
           </thead>
           <tbody>
-            <% stack.log(entries: 10).each do |log| %>
+            <% stack.log(entries: 10).reverse.each do |log| %>
               <tr>
                 <td><%= log['run_at'] %></td>
                 <td><%= log['action'] %> <%= log['status'] %></td>
