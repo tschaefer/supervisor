@@ -1,5 +1,5 @@
 module Supervisor
-  class HostInfo
+  class Host
     def initialize(hostname_or_ip)
       ip = effective_ip(hostname_or_ip)
       hostname = effective_hostname(hostname_or_ip)

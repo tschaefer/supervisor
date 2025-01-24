@@ -34,11 +34,12 @@
         <tr>
           <td>Git Token</td>
           <td><%= attributes['git_token'] %></td>
+        </tr>
+        <% end %>
         <tr>
           <td>Compose File</td>
           <td><%= attributes.compose_file %></td>
         </tr>
-        <% end %>
         <% if attributes.compose_includes.present? %>
         <tr>
           <td>Compose Includes</td>

@@ -5,7 +5,7 @@ module HostInfoHelper
     server_name = request.server_name
 
     info = Rails.cache.fetch(server_name, expires_in: 1.day) do
-      Supervisor::HostInfo.new(server_name).to_h
+      Supervisor::Host.new(server_name).to_h
     end
 
     location = format_location(info)
