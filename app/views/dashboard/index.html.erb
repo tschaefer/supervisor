@@ -1,18 +1,18 @@
 <%= turbo_stream_from "stacks" %>
 
-<div data-controller="log">
+<div data-controller="dashboard">
   <div class="container-fluid">
     <nav class="navbar text-bg-dark fixed-top" data-bs-theme="dark">
       <div class="container-fluid">
-        <span class="navbar-brand mb-0 h1">Supervisor 🚀</span>
+        <span class="navbar-brand mb-0 h1">🚀 Supervisor</span>
         <span class="navbar-text text-secondary d-none d-sm-block">
-          <sup><%= host_info %></sup>
+          <%= host_info %>
         </span>
       </div>
     </nav>
-    <div class="row row-gap-3" id="main">
-      <div class="col col-lg-7">
-        <div class="card text-bg-dark">
+    <div class="row row-gap-2 row-gap-navbar row-gap-bottom align-items-stretch">
+      <div class="col col-lg-8">
+        <div class="card text-bg-dark h-100">
           <div class="card-header">
             <h5>Stacks</h5>
             <span class="text-secondary">
@@ -21,7 +21,7 @@
               Unhealthy: <%= @stacks.reject(&:healthy).count %>
             </span>
           </div>
-          <div class="card-body">
+          <div class="card-body table-responsive">
             <table id="stacks" class="table table-dark table-hover">
               <thead>
                 <tr>
@@ -30,6 +30,7 @@
                   <th>Name</th>
                   <th class="d-none d-sm-table-cell">Strategy</th>
                   <th class="d-none d-sm-table-cell">Last run</th>
+                  <th class="d-none d-sm-table-cell">Last action</th>
                   <th class="d-none d-sm-table-cell">Processed</th>
                   <th class="d-none d-sm-table-cell">Failed</th>
                 </tr>
@@ -43,30 +44,70 @@
           </div>
         </div>
       </div>
-      <div class="col col-lg-5">
-      <turbo-frame id="log-frame" data-turbo-permanent>
-        <% uuid = params[:uuid] || @stacks&.first&.uuid %>
-        <% if uuid %>
-          <% stack = Stack.find_by(uuid: uuid) %>
-        <% end %>
-        <div class="card text-bg-dark">
+      <div class="col col-lg-4">
+        <div class="card text-bg-dark h-100">
           <div class="card-header">
-            <h5>Log</h5>
-            <% if stack %>
-            <span class="text-secondary"><%= stack.name %> - <%= stack.uuid %></span>
-            <% end %>
+            <% info = docker_info %>
+            <h5>Docker</h5>
+            <span class="text-secondary">
+              Version: <%= info[:server_version] %>
+            </span>
           </div>
-          <div class="card-body">
-            <div id="logs">
-              <pre><code><%= stack&.log(entries: 25)&.join("\n") || '' %></code></pre>
-            </div>
+          <div class="card-body table-responsive">
+            <table class="table table-dark table-hover">
+              <thead>
+                <tr>
+                  <th>Key</th>
+                  <th>Value</th>
+                </tr>
+              </thead>
+              <tbody>
+                <% info.each do |key, value| %>
+                  <% next if key.to_s == 'server_version' %>
+                  <tr>
+                    <td><%= key.to_s.humanize.titleize %></td>
+                    <td><%= value %></td>
+                  </tr>
+                <% end %>
+              </tbody>
+            </table>
+          </div>
         </div>
-      </turbo-frame>
       </div>
     </div>
+    <turbo-frame id="stack-frame" data-turbo-permanent>
+    <div class="row row-gap-2 row-gap-bottom align-items-stretch">
+    <%
+      uuid = params[:uuid] || @stacks&.first&.uuid
+      stack = uuid ? Stack.find_by(uuid: uuid) : nil
+    %>
+    <% if stack %>
+      <div class="col col-lg-5">
+        <%= render partial: "stacks/details", locals: { stack: stack } %>
+      </div>
+      <div class="col col-lg-3">
+        <%= render partial: "stacks/logs", locals: { stack: stack } %>
+      </div>
+      <div class="col col-lg-4">
+        <%= render partial: "stacks/statistics", locals: { stack: stack } %>
+      </div>
+    <% else %>
+      <div class="col col-lg-12">
+        <div class="card text-bg-dark h-100">
+          <div class="card-header">
+            <h5>No stack selected</h5>
+          </div>
+          <div class="card-body">
+            <p>Select a stack from the list to view details.</p>
+          </div>
+        </div>
+      </div>
+    <% end %>
+    </div>
+    </turbo-frame>
   </div>
   <input type="hidden" id="selected-uuid"
-         data-log-target="selectedUuid"
+         data-dashboard-target="selectedUuid"
          data-turbo-permanent
          value="<%= params[:uuid] || @stacks&.first&.uuid %>">
 </div>

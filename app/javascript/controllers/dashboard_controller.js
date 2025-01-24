@@ -4,7 +4,7 @@ export default class extends Controller {
   static targets = ["selectedUuid"];
 
   connect() {
-    document.addEventListener("turbo:load", this.restoreLog.bind(this));
+    document.addEventListener("turbo:load", this.restoreStack.bind(this));
   }
 
   select(event) {
@@ -12,18 +12,18 @@ export default class extends Controller {
     this.selectedUuidTarget.value = uuid;
   }
 
-  restoreLog() {
+  restoreStack() {
     const uuid = this.selectedUuidTarget.value;
     if (uuid) {
-      this.updateLogs(uuid);
+      this.updateStack(uuid);
     }
   }
 
-  updateLogs(uuid) {
-    const logFrame = document.getElementById("log-frame");
-    if (logFrame) {
+  updateStack(uuid) {
+    const stackFrame = document.getElementById("stack-frame");
+    if (stackFrame) {
       this.currentUuidValue = uuid;
-      Turbo.visit(`/dashboard?uuid=${uuid}`, { frame: logFrame.id });
+      Turbo.visit(`/dashboard?uuid=${uuid}`, { frame: stackFrame.id });
     }
   }
 }

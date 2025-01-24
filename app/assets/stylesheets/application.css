@@ -12,16 +12,29 @@
 *                    { scrollbar-width: none; }
 
 body {
-  font-family: Ubuntu, sans-serif;
   background-color: #343a40;
+  font-size: .9rem;
 }
-
-#main { margin-top: 57px; }
-
-.table-row-click { cursor: pointer; }
 
 .icon {
   width: 1em;
   height: 1em;
   vertical-align: -0.125em;
+}
+
+.row-gap-bottom {
+  margin-bottom: .5rem;
+}
+.row-gap-navbar {
+  margin-top: 3.6rem;
+}
+
+.table-row-click {
+  cursor: pointer;
+}
+
+.table-ul {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
 }

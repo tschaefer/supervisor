@@ -21,12 +21,19 @@ class StackJob
 
         stack_log_file = @stack.assets.log_file.to_s
         File.open(stack_log_file, 'a') do |log|
-          log.puts({ created_at: Time.now.utc.iso8601(3), message: __log_message }.to_json)
+          log.puts(
+            {
+              run_at: Time.now.utc.iso8601(3),
+              action: __action,
+              status: success? ? 'succeeded' : 'failed',
+              message: @stdouterr
+            }.to_json
+          )
         end
       end
 
       def stack_stats
-        @stack.update_stats(succeeded: success?, action: __action.split.second)
+        @stack.update_stats(succeeded: success?, action: __action)
       end
 
       def stack_health
@@ -34,17 +41,7 @@ class StackJob
       end
 
       def __action
-        self.class.name.titleize.humanize.chomp(' job')
-      end
-
-      def __log_message
-        action = __action
-
-        if success?
-          "#{action} succeeded"
-        else
-          "#{action} failed"
-        end
+        self.class.name.titleize.split.second.downcase
       end
     end
   end

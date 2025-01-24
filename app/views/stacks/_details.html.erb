@@ -1,0 +1,83 @@
+<div class="card text-bg-dark h-100">
+  <div class="card-header">
+    <h5>Details</h5>
+    <% if stack %>
+    <span class="text-secondary"><%= stack.uuid %></span>
+    <% end %>
+  </div>
+  <div class="card-body table-responsive">
+  <% if stack %>
+    <% attributes = filter_secrets(stack.attributes) %>
+    <table class="table table-hover table-dark">
+      <thead>
+        <tr>
+          <th>Key</th>
+          <th>Value</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td>Git Repository</td>
+          <td><%= link_to nil, attributes.git_repository, class: 'link-light' %></td>
+        </tr>
+        <tr>
+          <td>Git Reference</td>
+          <td><%= attributes.git_reference %></td>
+        </tr>
+        <% if attributes.git_username.present? %>
+        <tr>
+          <td>Git Username</td>
+          <td><%= attributes.git_username %></td>
+        </tr>
+        <% end %>
+        <% if attributes.git_token.present? %>
+        <tr>
+          <td>Git Token</td>
+          <td><%= attributes['git_token'] %></td>
+        </tr>
+        <% end %>
+        <tr>
+          <td>Compose File</td>
+          <td><%= attributes.compose_file %></td>
+        </tr>
+        <% if attributes.compose_includes.present? %>
+        <tr>
+          <td>Compose Includes</td>
+          <td>
+            <ul class="table-ul">
+            <% attributes.compose_includes.each do |compose| %>
+              <li><%= compose %></li>
+            <% end %>
+            </ul>
+          </td>
+        </tr>
+        <% end %>
+        <% if attributes.compose_variables.present? %>
+        <tr>
+          <td>Compose Variables</td>
+          <td>
+            <ul class="table-ul">
+            <% attributes.compose_variables.each do |key, value| %>
+              <li><%= key %>=<%= value %></li>
+            <% end %>
+            </ul>
+          </td>
+        </tr>
+        <% end %>
+        <% if attributes.strategy == 'webhook' %>
+          <tr>
+            <td>Signature Header</td>
+            <td><%= attributes.signature_header %></td>
+          </tr>
+          <tr>
+            <td>Signature Secret</td>
+            <td><%= attributes.signature_secret %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+  <% end %>
+  </div>
+</div>
+
+

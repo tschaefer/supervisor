@@ -90,6 +90,7 @@ GEM
       racc
     builder (3.3.0)
     byebug (11.1.3)
+    chartkick (5.1.2)
     childprocess (5.1.0)
       logger (~> 1.5)
     chronic_duration (0.10.6)
@@ -439,6 +440,7 @@ DEPENDENCIES
   awesome_print
   bootsnap
   brakeman
+  chartkick
   chronic_duration (>= 0.10.6)
   factory_bot_rails
   faker

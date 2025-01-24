@@ -1,0 +1,33 @@
+<div class="card text-bg-dark h-100">
+  <div class="card-header">
+    <h5>Logs</h5>
+    <% if stack %>
+    <span class="text-secondary"><%= stack.uuid %></span>
+    <% end %>
+  </div>
+  <div class="card-body table-responsive">
+  <% if stack %>
+    <table class="table table-dark table-hover">
+      <thead>
+        <tr>
+          <th>Run at</th>
+          <th>Action</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% stack.log(entries: 10).reverse.each do |log| %>
+          <tr>
+            <td><%= log['run_at'] %></td>
+            <td><%= log['action'] %> <%= log['status'] %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <p>
+      <% relpath = Pathname.new(stack.assets['log_file']).relative_path_from(Rails.root).to_s %>
+      <%= link_to "View all logs", relpath, class: "btn btn-primary btn-secondary", download: "#{stack.uuid}.log" %>
+    </p>
+  <% end %>
+  </div>
+</div>
+
