@@ -1,6 +1,6 @@
 <%= turbo_stream_from "stacks" %>
 
-<div data-controller="log">
+<div data-controller="dashboard">
   <div class="container-fluid">
     <nav class="navbar text-bg-dark fixed-top" data-bs-theme="dark">
       <div class="container-fluid">
@@ -75,6 +75,7 @@
         </div>
       </div>
     </div>
+    <turbo-frame id="stack-frame" data-turbo-permanent>
     <div class="row row-gap-2 row-gap-bottom align-items-stretch">
     <%
       uuid = params[:uuid] || @stacks&.first&.uuid
@@ -85,14 +86,10 @@
         <%= render partial: "stacks/details", locals: { stack: stack } %>
       </div>
       <div class="col col-lg-3">
-      <turbo-frame id="log-frame" data-turbo-permanent>
         <%= render partial: "stacks/logs", locals: { stack: stack } %>
-      </turbo-frame>
       </div>
       <div class="col col-lg-4">
-      <turbo-frame id="statistics-frame" data-turbo-permanent>
         <%= render partial: "stacks/statistics", locals: { stack: stack } %>
-      </turbo-frame>
       </div>
     <% else %>
       <div class="col col-lg-12">
@@ -107,9 +104,10 @@
       </div>
     <% end %>
     </div>
+    </turbo-frame>
   </div>
   <input type="hidden" id="selected-uuid"
-         data-log-target="selectedUuid"
+         data-dashboard-target="selectedUuid"
          data-turbo-permanent
          value="<%= params[:uuid] || @stacks&.first&.uuid %>">
 </div>
