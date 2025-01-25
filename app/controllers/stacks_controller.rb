@@ -56,7 +56,7 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
   def control
     command = params[:command]
 
-    allowed_commands = %w[start stop restart redeploy]
+    allowed_commands = %w[start stop restart redeploy pause unpause]
     return render json: { error: 'Invalid control command' }, status: :bad_request if allowed_commands.exclude?(command)
 
     @stack.send(command.to_sym)

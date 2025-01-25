@@ -22,6 +22,14 @@ class Stack
         StackDeployJob.perform_later(self)
       end
 
+      def pause
+        StackPauseJob.perform_later(self)
+      end
+
+      def unpause
+        StackUnpauseJob.perform_later(self)
+      end
+
       private
 
       def perform_deploy_job

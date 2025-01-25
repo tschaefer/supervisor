@@ -22,7 +22,7 @@ control_stack() {
     compose --progress plain \
     --file "<%= stack.compose_file %>" $files \
     --env-file "<%= assets.env_file %>" \
-    "<%= self.class.control_command %>" || true
+    "<%= self.class.control_command %>"
 }
 
 control_stack
