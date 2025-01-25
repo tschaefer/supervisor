@@ -25,6 +25,13 @@ PreCommit:
     enabled: true
   YamlLint:
     enabled: true
+  CustomScript:
+    enabled: true
+    description: 'Analyze with Biome'
+    required_executable: 'biome'
+    command: ['biome', 'lint', '--javascript-linter-enabled=true']
+    include:
+      - 'app/javascript/**/*'
 
 PrePush:
   ALL:
