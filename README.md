@@ -63,6 +63,12 @@ docker container run --name supervisor \
   ghcr.io/tschaefer/supervisor
 ```
 
+### Managing and deploying Supervisor
+
+[Supervisor Client](https://github.com/tschaefer/supervisor-client) is a
+Ruby library and command-line tool that allows you to manage stacks and deploy
+the Supervisor service.
+
 ### Exposing Port and HTTPS Requirements
 
 - The Supervisor container exposes **port 3000** for HTTP traffic but **only accepts HTTPS connections**.
