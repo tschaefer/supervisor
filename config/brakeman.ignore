@@ -47,6 +47,29 @@
       "note": "Allow stack log file download"
     },
     {
+      "warning_type": "Command Injection",
+      "warning_code": 14,
+      "fingerprint": "80bd62a07f42d85dc647bd1d0dd51666c6ca09f0ed5e61e7c497098e6757a2be",
+      "check_name": "Execute",
+      "message": "Possible command injection",
+      "file": "app/jobs/stack_job.rb",
+      "line": 29,
+      "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
+      "code": "Open3.capture2e({}, ERB.new(Rails.root.join(\"app/jobs/stack_job/templates/#{self.class.script_template}.sh.tt\").read, :trim_mode => \"-\").result(binding))",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "StackJob",
+        "method": "execute"
+      },
+      "user_input": "self.class.script_template",
+      "confidence": "Medium",
+      "cwe_id": [
+        77
+      ],
+      "note": "Script templates are part of the source code"
+    },
+    {
       "warning_type": "File Access",
       "warning_code": 16,
       "fingerprint": "ecd18b0a8cd3cb99d43f5dcb2686642841fc8763951d1748fd7b384ed4cbab93",

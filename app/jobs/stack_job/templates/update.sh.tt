@@ -2,13 +2,13 @@
 set -e
 
 __compose_includes() {
-    local include_files="<%= assets.include_files %>"
+    local include_files="<%= @assets.include_files %>"
     if [ -z "$include_files" ]; then
         return
     fi
 
     local includes
-    includes=$(echo "<%= assets.include_files %>" | tr ' ' '\n' | sed 's/^/--file /' | tr '\n' ' ')
+    includes=$(echo "<%= @assets.include_files %>" | tr ' ' '\n' | sed 's/^/--file /' | tr '\n' ' ')
     printf "%s" "${includes}"
 }
 
@@ -22,29 +22,29 @@ __resolve_path() {
     local resolved_file
     resolved_file=$(readlink -m "$file")
     local relative_file
-    relative_file=$(realpath --relative-to="<%= assets.git_dir %>" "$resolved_file")
+    relative_file=$(realpath --relative-to="<%= @assets.git_dir %>" "$resolved_file")
     echo "$relative_file"
 }
 
 fetch_diff_stack() {
-  cd "<%= assets.git_dir %>" >/dev/null
-  git fetch origin "<%= stack.git_reference %>"
-  git diff --name-only FETCH_HEAD || exit 254
+  cd "<%= @assets.git_dir %>" >/dev/null
+  git fetch origin "<%= @stack.git_reference %>"
+  git diff --name-only FETCH_HEAD || exit 0
   cd - >/dev/null
 }
 
 has_changed_stack() {
-  cd "<%= assets.git_dir %>" >/dev/null
+  cd "<%= @assets.git_dir %>" >/dev/null
 
   local has_changes="false"
   for file in $(git diff --name-only FETCH_HEAD); do
-      resolved=$(__resolve_path "<%= stack.compose_file %>")
+      resolved=$(__resolve_path "<%= @stack.compose_file %>")
       if [ "$file" = "$resolved" ]; then
               has_changes="true"
               break
       fi
 
-      local include_files="<%= assets.include_files %>"
+      local include_files="<%= @assets.include_files %>"
       if [ -z "$include_files" ]; then
         continue
       fi
@@ -62,33 +62,33 @@ has_changed_stack() {
   done
 
   if [ "$has_changes" = "false" ]; then
-    exit 254
+    exit 0
   fi
 
   cd - >/dev/null
 }
 
 stop_remove_stack() {
-  if [ ! -d "<%= assets.git_dir %>" ]; then
+  if [ ! -d "<%= @assets.git_dir %>" ]; then
     return
   fi
 
-  cd "<%= assets.git_dir %>" >/dev/null
+  cd "<%= @assets.git_dir %>" >/dev/null
 
   local files
   files=$(__compose_includes)
 
   sudo docker --log-level error \
     compose --progress plain \
-    --file "<%= stack.compose_file %>" $files \
-    --env-file "<%= assets.env_file %>" \
+    --file "<%= @stack.compose_file %>" $files \
+    --env-file "<%= @assets.env_file %>" \
     down || true
 
   cd - >/dev/null
 }
 
 create_start_stack() {
-  cd "<%= assets.git_dir %>" >/dev/null
+  cd "<%= @assets.git_dir %>" >/dev/null
 
   git merge FETCH_HEAD
 
@@ -97,8 +97,8 @@ create_start_stack() {
 
   sudo docker --log-level error \
     compose --progress plain \
-    --file "<%= stack.compose_file %>" $files \
-    --env-file "<%= assets.env_file %>" \
+    --file "<%= @stack.compose_file %>" $files \
+    --env-file "<%= @assets.env_file %>" \
     up --detach
 
   cd - >/dev/null

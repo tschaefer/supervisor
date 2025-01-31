@@ -2,37 +2,37 @@
 set -e
 
 __compose_includes() {
-    local include_files="<%= assets.include_files %>"
+    local include_files="<%= @assets.include_files %>"
     if [ -z "$include_files" ]; then
         return
     fi
 
     local includes
-    includes=$(echo "<%= assets.include_files %>" | tr ' ' '\n' | sed 's/^/--file /' | tr '\n' ' ')
+    includes=$(echo "<%= @assets.include_files %>" | tr ' ' '\n' | sed 's/^/--file /' | tr '\n' ' ')
     printf "%s" "${includes}"
 }
 
 remove_stop_stack() {
-  if [ ! -d "<%= assets.git_dir %>" ]; then
+  if [ ! -d "<%= @assets.git_dir %>" ]; then
     return
   fi
 
-  cd "<%= assets.git_dir %>" >/dev/null
+  cd "<%= @assets.git_dir %>" >/dev/null
 
   local files
   files=$(__compose_includes)
 
   sudo docker --log-level error \
     compose --progress plain \
-    --file "<%= stack.compose_file %>" $files \
-    --env-file "<%= assets.env_file %>" \
+    --file "<%= @stack.compose_file %>" $files \
+    --env-file "<%= @assets.env_file %>" \
     down || true
 
   cd - >/dev/null
 }
 
 remove_base_dir() {
-  rm -rf "<%= assets.base_dir %>"
+  rm -rf "<%= @assets.base_dir %>"
 }
 
 remove_stop_stack

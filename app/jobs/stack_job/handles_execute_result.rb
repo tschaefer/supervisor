@@ -5,39 +5,26 @@ class StackJob
     included do
       private
 
-      const_set(:OK, 0)
-      const_set(:NOOP, 254)
-
-      def success?
-        [OK, NOOP].include?(@status)
-      end
-
-      def error?
-        !success?
-      end
-
-      def stack_log
-        Rails.logger.error { "[#{@stack.uuid}] #{@stdouterr}" } if error?
-
+      def stack_log(output, status)
         stack_log_file = @stack.assets.log_file.to_s
         File.open(stack_log_file, 'a') do |log|
           log.puts(
             {
               run_at: Time.now.utc.iso8601(3),
               action: __action,
-              status: success? ? 'succeeded' : 'failed',
-              message: @stdouterr
+              status: status.success? ? 'succeeded' : 'failed',
+              message: output
             }.to_json
           )
         end
       end
 
-      def stack_stats
-        @stack.update_stats(succeeded: success?, action: __action)
+      def stack_stats(status)
+        @stack.update_stats(succeeded: status.success?, action: __action)
       end
 
-      def stack_health
-        @stack.update(healthy: success?)
+      def stack_health(status)
+        @stack.update(healthy: status.success?)
       end
 
       def __action

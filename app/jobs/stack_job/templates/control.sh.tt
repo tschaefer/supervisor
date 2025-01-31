@@ -2,26 +2,26 @@
 set -e
 
 __compose_includes() {
-    local include_files="<%= assets.include_files %>"
+    local include_files="<%= @assets.include_files %>"
     if [ -z "$include_files" ]; then
         return
     fi
 
     local includes
-    includes=$(echo "<%= assets.include_files %>" | tr ' ' '\n' | sed 's/^/--file /' | tr '\n' ' ')
+    includes=$(echo "<%= @assets.include_files %>" | tr ' ' '\n' | sed 's/^/--file /' | tr '\n' ' ')
     printf "%s" "${includes}"
 }
 
 
 control_stack() {
-  cd "<%= assets.git_dir %>" >/dev/null
+  cd "<%= @assets.git_dir %>" >/dev/null
 
   files=$(__compose_includes)
 
   sudo docker --log-level error \
     compose --progress plain \
-    --file "<%= stack.compose_file %>" $files \
-    --env-file "<%= assets.env_file %>" \
+    --file "<%= @stack.compose_file %>" $files \
+    --env-file "<%= @assets.env_file %>" \
     "<%= self.class.control_command %>"
 }
 
