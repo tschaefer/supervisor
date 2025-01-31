@@ -26,12 +26,15 @@ Yabeda.configure do
     end
     gauge :total_stacks do
       comment 'The total number of stacks.'
+      aggregation :sum
     end
     gauge :total_healthy_stacks do
       comment 'The total number of healthy stacks.'
+      aggregation :sum
     end
     gauge :total_unhealthy_stacks do
       comment 'The total number of unhealthy stacks.'
+      aggregation :sum
     end
 
     collect do
