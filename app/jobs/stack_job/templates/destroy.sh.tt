@@ -7,9 +7,7 @@ __compose_includes() {
         return
     fi
 
-    local includes
-    includes=$(echo "<%= @assets.include_files %>" | tr ' ' '\n' | sed 's/^/--file /' | tr '\n' ' ')
-    printf "%s" "${includes}"
+    echo "<%= @assets.include_files %>" | tr ' ' '\n' | sed 's/^/--file /' | tr '\n' ' '
 }
 
 remove_stop_stack() {
