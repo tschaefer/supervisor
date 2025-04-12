@@ -1,56 +1,45 @@
 module Supervisor
   class Host
-    def initialize(hostname_or_ip)
-      ip = effective_ip(hostname_or_ip)
-      hostname = effective_hostname(hostname_or_ip)
-
-      info = {}
-
-      ipaddr = IPAddr.new(ip)
-      if ipaddr.private? || ipaddr.loopback? || ipaddr.link_local?
-        info[:ip] = ip
-        info[:hostname] = hostname
-      else
-        info = fetch_info(ip)
-        info.symbolize_keys!
-        info[:ip] = ip
-        info[:hostname] = hostname
-        info.delete(:readme)
-      end
+    def initialize(ip = nil)
+      info = fetch_info(ip)
+      info.symbolize_keys!
+      info.delete(:readme)
 
       update_instance(info)
     end
 
     private
 
-    def effective_ip(hostname_or_ip)
-      return hostname_or_ip if (hostname_or_ip =~ Resolv::AddressRegex).present?
-
-      begin
-        resolver = Resolv::DNS.new.tap { |r| r.timeouts = 1 }
-        resolver.getaddress(hostname_or_ip).to_s
-      rescue Resolv::ResolvError
-        Rails.logger.error { "Failed to resolve hostname #{hostname_or_ip}" }
-        nil
-      end
-    end
-
-    def effective_hostname(hostname_or_ip)
-      return hostname_or_ip if (hostname_or_ip =~ Resolv::AddressRegex).nil?
-
-      begin
-        resolver = Resolv::DNS.new.tap { |r| r.timeouts = 1 }
-        resolver.getname(hostname_or_ip).to_s
-      rescue Resolv::ResolvError
-        Rails.logger.error { "Failed to resolve IP #{hostname_or_ip}" }
-        nil
-      end
-    end
-
     def fetch_info(ip)
+      return specific(ip) if ip
+
+      v4.merge(v6)
+    end
+
+    def specific(ip)
       JSON.parse(Net::HTTP.get(URI("https://ipinfo.io/#{ip}")))
     rescue StandardError => e
-      Rails.logger.error { "Failed to fetch IP info for #{ip}: #{e.message}" }
+      Rails.logger.error { "Failed to fetch specific IP info: #{e.message}" }
+      {}
+    end
+
+    def v4
+      info = JSON.parse(Net::HTTP.get(URI('https://ipinfo.io/')))
+      info['ipv4'] = info.delete('ip')
+
+      info
+    rescue StandardError => e
+      Rails.logger.error { "Failed to fetch IPv4 info: #{e.message}" }
+      {}
+    end
+
+    def v6
+      info = JSON.parse(Net::HTTP.get(URI('https://6.ipinfo.io/')))
+      info['ipv6'] = info.delete('ip')
+
+      info
+    rescue StandardError => e
+      Rails.logger.error { "Failed to fetch IPv6 info: #{e.message}" }
       {}
     end
 
