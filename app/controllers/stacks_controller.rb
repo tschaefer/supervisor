@@ -64,12 +64,21 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
 
   # POST /stacks/${uuid}/webhook
   def webhook
-    if @stack.polling?
-      render json: { error: 'Stack strategy is not webhook' }, status: :conflict
-    else
-      StackWebhookJob.perform_later(@stack)
-      render json: { message: 'Webhook received' }, status: :accepted
+    return render json: { error: 'Stack strategy is not webhook' }, status: :conflict if @stack.polling?
+
+    request.body.rewind
+    begin
+      payload = JSON.parse(request.body.read)
+    rescue JSON::ParserError
+      return render json: { error: 'Invalid JSON payload' }, status: :bad_request
     end
+
+    unless webhook_event_relevant?(payload)
+      return render json: { message: 'Irrelevant webhook event, ignored' }, status: :accepted
+    end
+
+    StackWebhookJob.perform_later(@stack)
+    render json: { message: 'Webhook received' }, status: :accepted
   end
 
   # GET /stacks/${uuid}/log
@@ -111,13 +120,15 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
     secret          = @stack.signature_secret
 
     begin
-      return if ActiveSupport::SecurityUtils.fixed_length_secure_compare(
+      if ActiveSupport::SecurityUtils.fixed_length_secure_compare(
         hmac,
         OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new(algorithm), secret, payload)
       )
+        request.body.rewind
+        return
+      end
     rescue ArgumentError, TypeError, RuntimeError
-      # signature is nil or differs in length
-      # bad digest algorithm
+      # signature is nil or differs in length or bad digest algorithm
     end
 
     render json: { error: 'Payload signature is invalid' }, status: :bad_request
@@ -142,4 +153,24 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
   end
 
   def fetch_log; end
+
+  def webhook_event_relevant?(payload)
+    event_header = %w[
+      X-Github-Event
+      X-Gitlab-Event
+      X-Gitea-Event
+    ].find do |header|
+      request.headers[header].present?
+    end
+
+    return true if event_header.blank?
+    return true unless event_header.match?(%r{push}i)
+
+    reference = payload.fetch('ref', nil)
+
+    return true if reference.blank?
+    return true if reference != @stack.git_reference
+
+    false
+  end
 end
