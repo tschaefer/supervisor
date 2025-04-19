@@ -213,7 +213,7 @@ RSpec.describe '/stacks', type: :request do
           signature_header: 'X-Hub-Signature',
           signature_secret: SecureRandom.hex(32)
         )
-        payload = { message: Faker::Lorem.unique.word, ref: stack.git_reference }.to_json
+        payload = { message: Faker::Lorem.unique.word }.to_json
         sha256 = OpenSSL::HMAC.hexdigest(OpenSSL::Digest.new('sha256'), stack.signature_secret, payload)
 
         post webhook_stack_url(stack.uuid), params: JSON.parse(payload),
