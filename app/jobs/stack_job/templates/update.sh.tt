@@ -32,7 +32,7 @@ __resolve_path() {
 
 fetch_diff_stack() {
   cd "<%= @assets.git_dir %>" >/dev/null
-  git fetch --depth 1 origin "<%= @stack.git_reference %>"
+  git fetch origin "<%= @stack.git_reference %>"
   git diff --name-only FETCH_HEAD || exit 0
   cd - >/dev/null
 }

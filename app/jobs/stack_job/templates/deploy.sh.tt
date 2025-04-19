@@ -39,12 +39,7 @@ clone_prepare_stack() {
   rm -rf "<%= @assets.git_dir %>"
   rm -f "<%= @assets.env_file %>"
 
-  git clone --depth 1 "<%= @stack.url.normalize %>" "<%= @assets.git_dir %>"
-
-  cd "<%= @assets.git_dir %>" >/dev/null
-  git reflog expire --expire=now --all
-  git gc --prune=all --aggressive
-  cd - >/dev/null
+  git clone "<%= @stack.url.normalize %>" "<%= @assets.git_dir %>"
 
   cd "<%= @assets.git_dir %>" >/dev/null
 
