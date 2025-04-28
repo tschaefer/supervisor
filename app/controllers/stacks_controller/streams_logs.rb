@@ -28,8 +28,13 @@ class StacksController
       def open_log_file!(sse)
         log_file = @stack.assets.log_file.to_s
 
-        unless File.exist?(log_file)
-          send_close_message(sse, 'No log file found')
+        timeout = 2.minutes
+        start_time = Time.zone.now
+        until File.exist?(log_file)
+          sleep 0.1
+          next if Time.zone.now - start_time < timeout
+
+          send_close_message(sse, 'Timeout waiting for log file')
           return nil
         end
 
