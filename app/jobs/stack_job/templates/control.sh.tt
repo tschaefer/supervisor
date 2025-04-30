@@ -1,15 +1,19 @@
 #!/bin/sh
 set -e
 
+BASE_DIR="<%= @assets.base_dir %>"
+LOCK_FILE="$BASE_DIR/.lock"
+mkdir -p "$BASE_DIR"
+exec 9>"$LOCK_FILE"
+flock -n 9 || { echo "Another operation is already in progress for this stack." >&2; exit 1; }
+
 __compose_includes() {
     local include_files="<%= @assets.include_files %>"
     if [ -z "$include_files" ]; then
         return
     fi
 
-    local includes
-    includes=$(echo "<%= @assets.include_files %>" | tr ' ' '\n' | sed 's/^/--file /' | tr '\n' ' ')
-    printf "%s" "${includes}"
+    echo "<%= @assets.include_files %>" | tr ' ' '\n' | sed 's/^/--file /' | tr '\n' ' '
 }
 
 
