@@ -90,7 +90,7 @@ GEM
       racc
     builder (3.3.0)
     byebug (12.0.0)
-    chartkick (5.1.5)
+    chartkick (5.2.0)
     childprocess (5.1.0)
       logger (~> 1.5)
     chronic_duration (0.10.6)
