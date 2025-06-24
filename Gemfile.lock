@@ -383,7 +383,7 @@ GEM
     shellwords (0.2.2)
     shoulda-matchers (6.5.0)
       activesupport (>= 5.2.0)
-    solid_cable (3.0.10)
+    solid_cable (3.0.11)
       actioncable (>= 7.2)
       activejob (>= 7.2)
       activerecord (>= 7.2)
