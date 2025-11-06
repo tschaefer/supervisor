@@ -260,6 +260,16 @@ GEM
     public_suffix (6.0.1)
     puma (7.1.0)
       nio4r (~> 2.0)
+    pyroscope (0.6.7)
+      ffi
+    pyroscope (0.6.7-aarch64-linux)
+      ffi
+    pyroscope (0.6.7-arm64-darwin)
+      ffi
+    pyroscope (0.6.7-x86_64-darwin)
+      ffi
+    pyroscope (0.6.7-x86_64-linux)
+      ffi
     raabro (1.4.0)
     racc (1.8.1)
     rack (3.2.3)
@@ -474,6 +484,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma (>= 5.0)
+  pyroscope (~> 0.6.7)
   rails (~> 8.1.1)
   rails-healthcheck
   rspec-rails (~> 8.0.2)
