@@ -27,6 +27,9 @@ gem 'yabeda-prometheus-mmap'
 gem 'yabeda-puma-plugin'
 gem 'yabeda-rails'
 
+# Profiling
+gem 'pyroscope', '~> 0.6.7', require: false
+
 # Application requirements
 gem 'addressable'
 gem 'chartkick'

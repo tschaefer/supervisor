@@ -257,6 +257,14 @@ To retrieve Prometheus metrics, you can access the
   * `supervisor_jobs_succeeded_total`: The total number of stack jobs that succeeded. (counter)
   * `supervisor_jobs_failed_total`: The total number of stack jobs that failed. (counter)
 
+## Profiling
+
+Supervisor sends CPU profiling data to a Grafana Pyroscope instance if the
+environment variable `SUPERVISOR_PYROSCOPE_SERVER_ADDRESS` is set. By default,
+the profiling application name is `github.com/tschaefer/supervisor`. You can
+override this by setting the environment variable
+`SUPERVISOR_PYROSCOPE_APPLICATION_NAME`.
+
 ## Dashboard
 
 Supervisor provides a simple dashboard to view and monitor stacks. The
