@@ -107,7 +107,7 @@ RSpec.describe '/stacks', type: :request do
       it 'renders a JSON response with errors for the new stack' do
         post stacks_url,
              params: { stack: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
@@ -147,7 +147,7 @@ RSpec.describe '/stacks', type: :request do
         stack = Stack.create! valid_attributes
         patch stack_url(stack.uuid),
               params: { stack: invalid_attributes }, headers: valid_headers, as: :json
-        expect(response).to have_http_status(:unprocessable_entity)
+        expect(response).to have_http_status(:unprocessable_content)
         expect(response.content_type).to match(a_string_including('application/json'))
       end
     end
