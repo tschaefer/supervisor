@@ -29,7 +29,7 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
     if @stack.save
       render json: @stack, status: :created, location: @stack
     else
-      render json: { error: @stack.errors }, status: :unprocessable_entity
+      render json: { error: @stack.errors }, status: :unprocessable_content
     end
   end
 
@@ -38,7 +38,7 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
     if @stack.update(stack_params)
       render json: @stack
     else
-      render json: { error: @stack.errors }, status: :unprocessable_entity
+      render json: { error: @stack.errors }, status: :unprocessable_content
     end
   end
 
