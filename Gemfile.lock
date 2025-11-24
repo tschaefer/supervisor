@@ -176,7 +176,7 @@ GEM
       timeout
     net-smtp (0.5.1)
       net-protocol
-    nio4r (2.7.4)
+    nio4r (2.7.5)
     nokogiri (1.18.10-aarch64-linux-gnu)
       racc (~> 1.4)
     nokogiri (1.18.10-aarch64-linux-musl)
@@ -375,7 +375,7 @@ GEM
       lint_roller (~> 1.1)
       rubocop (>= 1.75.0, < 2.0)
       rubocop-ast (>= 1.47.1, < 2.0)
-    rubocop-rails (2.34.0)
+    rubocop-rails (2.34.1)
       activesupport (>= 4.2.0)
       lint_roller (~> 1.1)
       rack (>= 1.1)
@@ -444,7 +444,7 @@ GEM
     yabeda-prometheus-mmap (0.4.0)
       prometheus-client-mmap
       yabeda (~> 0.10)
-    yabeda-puma-plugin (0.8.0)
+    yabeda-puma-plugin (0.9.0)
       json
       puma
       yabeda (~> 0.5)
