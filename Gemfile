@@ -6,7 +6,7 @@ gem 'bootsnap', require: false
 gem 'importmap-rails'
 gem 'propshaft'
 gem 'puma', '>= 5.0'
-gem 'rails', '~> 8.1.1'
+gem 'rails', '~> 8.1.2'
 gem 'rails-healthcheck'
 gem 'solid_cable'
 gem 'solid_queue', '~> 1.2'
