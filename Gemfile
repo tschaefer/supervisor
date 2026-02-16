@@ -28,7 +28,7 @@ gem 'yabeda-puma-plugin'
 gem 'yabeda-rails'
 
 # Profiling
-gem 'pyroscope', '~> 0.6.7', require: false
+gem 'pyroscope', '~> 1.0.1', require: false
 
 # Application requirements
 gem 'addressable'
