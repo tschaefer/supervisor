@@ -38,7 +38,7 @@ class StacksController
           return nil
         end
 
-        log = File.open(log_file, 'r')
+        log = File.open(log_file, 'r') # rubocop:disable Style/FileOpen
         log.seek(0, IO::SEEK_END)
         log
       end
