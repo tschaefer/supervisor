@@ -99,7 +99,7 @@ class StacksController < ApplicationController # rubocop:disable Metrics/ClassLe
 
   def set_stack
     Rails.logger.debug { params.to_json }
-    @stack = Stack.find_by!(uuid: params[:uuid])
+    @stack = Stack.find_by!(uuid: params.expect(:uuid))
   rescue ActiveRecord::RecordNotFound
     render json: { error: 'Stack not found' }, status: :not_found
   end

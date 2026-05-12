@@ -1,27 +1,27 @@
 {
   "ignored_warnings": [
     {
-      "warning_type": "Dangerous Send",
-      "warning_code": 23,
-      "fingerprint": "63882a8ffe1934e347e4599d7c873cdafd65959dd4ea1ecd627f5f25f8f1a10b",
-      "check_name": "Send",
-      "message": "User controlled method execution",
-      "file": "app/controllers/stacks_controller.rb",
-      "line": 62,
-      "link": "https://brakemanscanner.org/docs/warning_types/dangerous_send/",
-      "code": "Stack.find_by!(:uuid => params[:uuid]).send(params[:command].to_sym)",
+      "warning_type": "File Access",
+      "warning_code": 16,
+      "fingerprint": "4904d0275afd5c2d4fb814d72e167bb544b6dd751e408e81881671fc3c8d3b69",
+      "check_name": "FileAccess",
+      "message": "Model attribute used in file name",
+      "file": "app/controllers/stacks_controller/streams_logs.rb",
+      "line": 41,
+      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
+      "code": "File.open(Stack.find_by!(:uuid => params.expect(:uuid)).assets.log_file.to_s, \"r\")",
       "render_path": null,
       "location": {
         "type": "method",
         "class": "StacksController",
-        "method": "control"
+        "method": "open_log_file!"
       },
-      "user_input": "params[:command].to_sym",
-      "confidence": "High",
+      "user_input": "Stack.find_by!(:uuid => params.expect(:uuid)).assets.log_file.to_s",
+      "confidence": "Medium",
       "cwe_id": [
-        77
+        22
       ],
-      "note": "User input is verified in previous code"
+      "note": "Allow stack log streaming."
     },
     {
       "warning_type": "File Access",
@@ -47,13 +47,36 @@
       "note": "Allow stack log file download"
     },
     {
+      "warning_type": "Dangerous Send",
+      "warning_code": 23,
+      "fingerprint": "7e985fe2f6eed90f6be94d15e341029faaf889fddca596fe02ce5fff090cdd46",
+      "check_name": "Send",
+      "message": "User controlled method execution",
+      "file": "app/controllers/stacks_controller.rb",
+      "line": 62,
+      "link": "https://brakemanscanner.org/docs/warning_types/dangerous_send/",
+      "code": "Stack.find_by!(:uuid => params.expect(:uuid)).send(params[:command].to_sym)",
+      "render_path": null,
+      "location": {
+        "type": "method",
+        "class": "StacksController",
+        "method": "control"
+      },
+      "user_input": "params[:command].to_sym",
+      "confidence": "High",
+      "cwe_id": [
+        77
+      ],
+      "note": "Allow stack log streaming."
+    },
+    {
       "warning_type": "Command Injection",
       "warning_code": 14,
       "fingerprint": "80bd62a07f42d85dc647bd1d0dd51666c6ca09f0ed5e61e7c497098e6757a2be",
       "check_name": "Execute",
       "message": "Possible command injection",
       "file": "app/jobs/stack_job.rb",
-      "line": 29,
+      "line": 46,
       "link": "https://brakemanscanner.org/docs/warning_types/command_injection/",
       "code": "Open3.capture2e({}, ERB.new(Rails.root.join(\"app/jobs/stack_job/templates/#{self.class.script_template}.sh.tt\").read, :trim_mode => \"-\").result(binding))",
       "render_path": null,
@@ -68,30 +91,7 @@
         77
       ],
       "note": "Script templates are part of the source code"
-    },
-    {
-      "warning_type": "File Access",
-      "warning_code": 16,
-      "fingerprint": "ecd18b0a8cd3cb99d43f5dcb2686642841fc8763951d1748fd7b384ed4cbab93",
-      "check_name": "FileAccess",
-      "message": "Model attribute used in file name",
-      "file": "app/controllers/stacks_controller/streams_logs.rb",
-      "line": 36,
-      "link": "https://brakemanscanner.org/docs/warning_types/file_access/",
-      "code": "File.open(Stack.find_by!(:uuid => params[:uuid]).assets.log_file.to_s, \"r\")",
-      "render_path": null,
-      "location": {
-        "type": "method",
-        "class": "StacksController",
-        "method": "open_log_file!"
-      },
-      "user_input": "Stack.find_by!(:uuid => params[:uuid]).assets.log_file.to_s",
-      "confidence": "Medium",
-      "cwe_id": [
-        22
-      ],
-      "note": ""
     }
   ],
-  "brakeman_version": "7.0.0"
+  "brakeman_version": "8.0.4"
 }
