@@ -28,7 +28,7 @@ gem 'yabeda-puma-plugin'
 gem 'yabeda-rails'
 
 # Profiling
-gem 'pyroscope', '~> 1.0.2', require: false
+gem 'pyroscope', '~> 1.0.9', require: false
 
 # Application requirements
 gem 'addressable'
@@ -57,5 +57,5 @@ group :development, :test do
   gem 'factory_bot_rails'
   gem 'faker'
   gem 'rspec-rails', '~> 8.0.4'
-  gem 'shoulda-matchers', '~> 7.0'
+  gem 'shoulda-matchers', '~> 8.0'
 end
