@@ -42,7 +42,7 @@ class Stack
           git_token
           git_username
         ]
-        StackDeployJob.perform_later(self) if saved_changes.keys.any? { |key| keys.include?(key) }
+        StackDeployJob.perform_later(self) if saved_changes.keys.intersect?(keys)
 
         return unless saved_change_to_strategy?
         return cancel_polling_job if webhook?
