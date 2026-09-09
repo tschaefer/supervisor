@@ -86,7 +86,7 @@ GEM
     awesome_print (1.9.2)
     base64 (0.3.0)
     bigdecimal (4.1.2)
-    bootsnap (1.25.0)
+    bootsnap (1.26.0)
       msgpack (~> 1.5)
     brakeman (8.0.6)
       racc
@@ -201,7 +201,7 @@ GEM
       racc (~> 1.4)
     numerizer (0.1.1)
     ostruct (0.6.3)
-    overcommit (0.72.0)
+    overcommit (0.73.0)
       childprocess (>= 0.6.3, < 6)
       iniparse (~> 1.4)
       rexml (>= 3.4.2)
