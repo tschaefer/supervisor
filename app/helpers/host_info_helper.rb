@@ -11,9 +11,8 @@ module HostInfoHelper
     location = format_location(info)
     ip = format_ip(info)
 
-    # rubocop:disable Rails/OutputSafety
+    # rubocop:disable-next Rails/OutputSafety
     "IP: #{ip} | Location: #{location}".html_safe
-    # rubocop:enable Rails/OutputSafety
   end
 
   private
