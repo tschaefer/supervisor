@@ -12,7 +12,7 @@ RSpec.describe 'Stack::performs_job', type: :model do
   context 'when the stack is created' do
     it 'performs a deploy job after creation' do
       stack.save
-      expect(StackDeployJob).to have_received(:perform_later).with(stack)
+      expect(StackDeployJob).to have_received(:perform_later).with(stack) # rubocop:disable RSpecRails/ReceivePerformLater
     end
 
     it 'enqueues a schedule job when the strategy is polling' do
@@ -31,7 +31,7 @@ RSpec.describe 'Stack::performs_job', type: :model do
       stack.save
       allow(StackDeployJob).to receive(:perform_later)
       stack.update(strategy: 'polling')
-      expect(StackDeployJob).to have_received(:perform_later).with(stack)
+      expect(StackDeployJob).to have_received(:perform_later).with(stack) # rubocop:disable RSpecRails/ReceivePerformLater
     end
 
     it 'does not perfrom a deploy job when no relevant info changed' do
