@@ -91,7 +91,7 @@ RSpec.describe Stack, type: :model do
         allow(StackStartJob).to receive(:perform_later).and_return(true)
 
         stack.start
-        expect(StackStartJob).to have_received(:perform_later).with(stack)
+        expect(StackStartJob).to have_received(:perform_later).with(stack) # rubocop:disable RSpecRails/ReceivePerformLater
       end
     end
 
@@ -100,7 +100,7 @@ RSpec.describe Stack, type: :model do
         allow(StackStopJob).to receive(:perform_later).and_return(true)
 
         stack.stop
-        expect(StackStopJob).to have_received(:perform_later).with(stack)
+        expect(StackStopJob).to have_received(:perform_later).with(stack) # rubocop:disable RSpecRails/ReceivePerformLater
       end
     end
 
@@ -109,7 +109,7 @@ RSpec.describe Stack, type: :model do
         allow(StackRestartJob).to receive(:perform_later).and_return(true)
 
         stack.restart
-        expect(StackRestartJob).to have_received(:perform_later).with(stack)
+        expect(StackRestartJob).to have_received(:perform_later).with(stack) # rubocop:disable RSpecRails/ReceivePerformLater
       end
     end
 
@@ -118,7 +118,7 @@ RSpec.describe Stack, type: :model do
         allow(StackDeployJob).to receive(:perform_later).and_return(true)
 
         stack.redeploy
-        expect(StackDeployJob).to have_received(:perform_later).with(stack)
+        expect(StackDeployJob).to have_received(:perform_later).with(stack) # rubocop:disable RSpecRails/ReceivePerformLater
       end
     end
 
