@@ -1,7 +1,7 @@
 source 'https://rubygems.org'
 
 # Basic Rails gems
-gem 'activerecord-enhancedsqlite3-adapter', '~> 0.8.0'
+gem 'activerecord-enhancedsqlite3-adapter', '~> 0.9.0'
 gem 'bootsnap', require: false
 gem 'importmap-rails'
 gem 'propshaft'

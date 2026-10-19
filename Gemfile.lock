@@ -56,7 +56,7 @@ GEM
       activemodel (= 8.1.4)
       activesupport (= 8.1.4)
       timeout (>= 0.4.0)
-    activerecord-enhancedsqlite3-adapter (0.8.0)
+    activerecord-enhancedsqlite3-adapter (0.9.0)
       activerecord (>= 7.1)
       sqlite3 (>= 1.6)
     activestorage (8.1.4)
@@ -149,7 +149,7 @@ GEM
       prism (>= 1.3.0)
       rdoc (>= 4.0.0)
       reline (>= 0.4.2)
-    json (3.0.2)
+    json (3.1.0)
     language_server-protocol (3.17.0.6)
     lint_roller (1.1.0)
     listen (3.10.0)
@@ -419,14 +419,14 @@ GEM
       fugit (~> 1.11)
       railties (>= 7.1)
       thor (>= 1.3.1)
-    sqlite3 (2.9.6-aarch64-linux-gnu)
-    sqlite3 (2.9.6-aarch64-linux-musl)
-    sqlite3 (2.9.6-arm-linux-gnu)
-    sqlite3 (2.9.6-arm-linux-musl)
-    sqlite3 (2.9.6-arm64-darwin)
-    sqlite3 (2.9.6-x86_64-darwin)
-    sqlite3 (2.9.6-x86_64-linux-gnu)
-    sqlite3 (2.9.6-x86_64-linux-musl)
+    sqlite3 (2.10.0-aarch64-linux-gnu)
+    sqlite3 (2.10.0-aarch64-linux-musl)
+    sqlite3 (2.10.0-arm-linux-gnu)
+    sqlite3 (2.10.0-arm-linux-musl)
+    sqlite3 (2.10.0-arm64-darwin)
+    sqlite3 (2.10.0-x86_64-darwin)
+    sqlite3 (2.10.0-x86_64-linux-gnu)
+    sqlite3 (2.10.0-x86_64-linux-musl)
     stimulus-rails (1.3.4)
       railties (>= 6.0.0)
     thor (1.5.0)
@@ -440,7 +440,7 @@ GEM
     unicode-display_width (3.3.0)
       unicode-emoji (~> 4.3)
     unicode-emoji (4.3.0)
-    uri (1.1.1)
+    uri (1.1.2)
     useragent (0.16.11)
     websocket-driver (0.8.2)
       base64
@@ -475,7 +475,7 @@ PLATFORMS
   x86_64-linux-musl
 
 DEPENDENCIES
-  activerecord-enhancedsqlite3-adapter (~> 0.8.0)
+  activerecord-enhancedsqlite3-adapter (~> 0.9.0)
   addressable
   awesome_print
   bootsnap
