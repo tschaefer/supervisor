@@ -93,7 +93,7 @@ GEM
     builder (3.3.0)
     byebug (13.0.0)
       reline (>= 0.6.0)
-    chartkick (5.2.1)
+    chartkick (5.3.0)
     childprocess (5.1.0)
       logger (~> 1.5)
     chronic_duration (0.10.6)
@@ -264,15 +264,11 @@ GEM
     public_suffix (7.0.5)
     puma (8.0.2)
       nio4r (~> 2.0)
-    pyroscope (1.1.4)
+    pyroscope (1.1.5)
       ffi
-    pyroscope (1.1.4-aarch64-linux)
+    pyroscope (1.1.5-arm64-darwin)
       ffi
-    pyroscope (1.1.4-arm64-darwin)
-      ffi
-    pyroscope (1.1.4-x86_64-darwin)
-      ffi
-    pyroscope (1.1.4-x86_64-linux)
+    pyroscope (1.1.5-x86_64-darwin)
       ffi
     raabro (1.5.0)
     racc (1.8.1)
@@ -493,7 +489,7 @@ DEPENDENCIES
   pry-byebug
   pry-rails
   puma (>= 5.0)
-  pyroscope (~> 1.1.4)
+  pyroscope (~> 1.1.5)
   rails (~> 8.1.4)
   rails-healthcheck
   rspec-rails (~> 8.0.4)
