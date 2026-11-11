@@ -56,6 +56,6 @@ group :development, :test do
   # Testing and mocking
   gem 'factory_bot_rails'
   gem 'faker'
-  gem 'rspec-rails', '~> 8.0.5'
+  gem 'rspec-rails', '~> 8.1.0'
   gem 'shoulda-matchers', '~> 8.0'
 end
